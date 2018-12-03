@@ -1,7 +1,7 @@
 const http = require('http');
 const https = require('https');
 
-module.exports = ({path, protocol = 'http:', hostname = 'localhost', port = 2300, method, params}) => (new Promise((resolve, reject) => {
+module.exports = ({path, protocol = 'http:', hostname = 'localhost', port = 80, method, params}) => (new Promise((resolve, reject) => {
     var body = JSON.stringify({
         jsonrpc: "2.0",
         method,

@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Unit test",
+            "name": "UT",
             "program": "${workspaceFolder}/tests/unit.js",
             "outputCapture": "std",
             "protocol": "inspector"
@@ -15,15 +15,23 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Integration test - external http",
-            "program": "${workspaceFolder}/tests/integration/external-http.js",
+            "name": "IT - ext. http api http",
+            "program": "${workspaceFolder}/tests/integration/external-http-api-http.js",
             "outputCapture": "std",
             "protocol": "inspector"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Integration test - external tcp",
+            "name": "IT - ext. http api tcp",
+            "program": "${workspaceFolder}/tests/integration/external-http-api-tcp.js",
+            "outputCapture": "std",
+            "protocol": "inspector"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "IT - external tcp",
             "program": "${workspaceFolder}/tests/integration/external-tcp-no-internal-requests.js",
             "outputCapture": "std",
             "protocol": "inspector"
@@ -31,7 +39,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Integration test - no external",
+            "name": "IT - no external",
             "program": "${workspaceFolder}/tests/integration/no-external.js",
             "outputCapture": "std",
             "protocol": "inspector"
