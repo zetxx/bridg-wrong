@@ -1,0 +1,15 @@
+language: node_js
+
+deploy:
+  provider: script
+  script: "cp .npmrc.template $HOME/.npmrc && npm publish"
+  skip_cleanup: true
+  on:
+    branch: master
+
+notifications:
+  email:
+    recipients:
+    - julio@packagecloud.io
+    on_success: change
+    on_failure: always
