@@ -1,2 +1,2 @@
-// require('./unit/findMethod');
-require('./unit/internal-api-call');
+require('./unit/findMethod');
+// require('./unit/internal-api-call');
