@@ -1,4 +1,7 @@
 language: node_js
+node_js:
+- "9"
+- "10"
 
 deploy:
   provider: script
@@ -10,6 +13,6 @@ deploy:
 notifications:
   email:
     recipients:
-    - julio@packagecloud.io
+    - zetxx@belogradchik.biz
     on_success: change
     on_failure: always
