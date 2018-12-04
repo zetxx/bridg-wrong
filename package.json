@@ -8,7 +8,7 @@
     "version": "0.0.2",
     "devDependencies": {
         "tap": "*",
-        "semantic-release-cli": "*"
+        "semantic-release": "*"
     },
     "scripts": {
         "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"

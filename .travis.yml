@@ -9,7 +9,7 @@ jobs:
     - stage: test
       script: npm run unit-test
     - stage: prerelease
-      script: npm run semantic-release || true
+      script: npm run semantic-release
     #- stage: npm release
     #  script: echo "Deploying to npm ..."
     #  deploy:
