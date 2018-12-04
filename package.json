@@ -11,6 +11,7 @@
         "semantic-release": "*"
     },
     "scripts": {
-        "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
+        "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
+        "semantic-release": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
     }
 }
