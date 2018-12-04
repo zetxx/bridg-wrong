@@ -8,6 +8,8 @@ jobs:
   include:
     - stage: test
       script: npm run unit-test
+    - stage: prerelease
+      script: npm run semantic-release || true
     #- stage: npm release
     #  script: echo "Deploying to npm ..."
     #  deploy:
