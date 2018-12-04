@@ -6,10 +6,12 @@ script: echo "Running tests against $(node -v) ..."
 
 jobs:
   include:
-    - stage: npm release
-      script: echo "Deploying to npm ..."
-      deploy:
-        provider: npm
-        email: zetxx@belogradchik.biz
-        api_key: $NPM_API_KEY
-        on: master
+    - stage: test
+      script: ./tests/unit.js
+    #- stage: npm release
+    #  script: echo "Deploying to npm ..."
+    #  deploy:
+    #    provider: npm
+    #    email: zetxx@belogradchik.biz
+    #    api_key: $NPM_API_KEY
+    #    on: master
