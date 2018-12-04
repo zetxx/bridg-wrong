@@ -7,7 +7,7 @@ script: echo "Running tests against $(node -v) ..."
 jobs:
   include:
     - stage: test
-      script: tests/unit.js
+      script: npm run unit-test
     #- stage: npm release
     #  script: echo "Deploying to npm ..."
     #  deploy:
