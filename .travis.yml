@@ -3,16 +3,13 @@ node_js:
 - "9"
 - "10"
 
-deploy:
-  provider: script
-  script: "cp .npmrc.template $HOME/.npmrc && npm publish"
-  skip_cleanup: true
-  on:
-    branch: master
+script: echo "Running tests against $(node -v) ..."
 
-notifications:
-  email:
-    recipients:
-    - zetxx@belogradchik.biz
-    on_success: change
-    on_failure: always
+jobs:
+  include:
+    - stage: npm release
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        api_key: $NPM_API_KEY
+        on: deploy-npm-release
