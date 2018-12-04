@@ -1,5 +1,5 @@
 const net = require('net');
-const Node = require('./base.js');
+const Node = require('../lib/base.js');
 
 const listenPort = 2300;
 const getId = () => {

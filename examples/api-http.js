@@ -1,5 +1,5 @@
 const http = require('http');
-const Node = require('./base.js');
+const Node = require('../lib/base.js');
 
 const listenPort = 2300;
 

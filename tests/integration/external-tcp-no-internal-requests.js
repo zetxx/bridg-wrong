@@ -1,7 +1,7 @@
 const util = require('util');
 const net = require('net');
 const jsonRpcClient = require('../../tests/jsonrpc-client');
-const node = require('../../lib/api-http');
+const node = require('../../examples/api-http');
 
 const codec = {
     encode: (message) => Buffer.from(JSON.stringify(message), 'utf8'),

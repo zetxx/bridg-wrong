@@ -1,6 +1,6 @@
 const jsonRpcClient = require('../../tests/clients/jsonrpc-http');
 const NodeBase = require('../../lib/base');
-const NodeApiHttp = require('../../lib/api-http');
+const NodeApiHttp = require('../../examples/api-http');
 
 function HttpClient() {
     HttpClient.prototype.parent.call(this);
