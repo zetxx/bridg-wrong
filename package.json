@@ -7,11 +7,9 @@
     },
     "version": "0.0.3",
     "devDependencies": {
-        "tap": "*",
-        "semantic-release": "*"
+        "tap": "*"
     },
     "scripts": {
-        "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
-        "semantic-release": "./node_modules/semantic-release/bin/semantic-release.js --prepare"
+        "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
     }
 }
