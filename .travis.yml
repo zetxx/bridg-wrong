@@ -8,12 +8,12 @@ jobs:
   include:
     - stage: test
       script: npm run unit-test
-    - stage: prerelease
-      script: npm run semantic-release
-    #- stage: npm release
-    #  script: echo "Deploying to npm ..."
-    #  deploy:
-    #    provider: npm
-    #    email: zetxx@belogradchik.biz
-    #    api_key: $NPM_API_KEY
-    #    on: master
+    #- stage: prerelease
+    #  script: npm run semantic-release
+    - stage: npm release
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        email: zetxx@belogradchik.biz
+        api_key: $NPM_API_KEY
+        on: master
