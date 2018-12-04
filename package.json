@@ -1,4 +1,11 @@
 {
+    "name": "bridg-wrong",
+    "author": {
+        "email": "zetxx@belogradchik.biz",
+        "name": "Elin Angelov",
+        "url": "https://github.com/zetxx/bridg-wrong"
+    },
+    "version": "0.0.1",
     "devDependencies": {
         "tap": "*"
     },
