@@ -1,27 +1,34 @@
 const tap = require('tap');
-const Node = require('../../lib/base.js');
+const Node = require('../../index.js');
 
 tap.test('api request - bypass external', (t) => {
-    const Node1 = function node1() {
-        this.parent(this);
+    class Node1 extends Node {
+        externalOut({message, meta: {method, connectionId, apiRequestId}}) {
+            return super.externalOut({message, meta: {method, apiRequestId}})
+                .then((msg) => {
+                    return this.externalIn({message: msg.message, meta: {method, apiRequestId}});
+                });
+        }
     };
-    Node1.prototype.externalOut = function({message, meta: {method, connectionId, apiRequestId}}) {
-        return this.parent.prototype.externalOut.call(this, {message, meta: {method, apiRequestId}})
-            .then((msg) => {
-                this.externalIn({message: msg.message, meta: {method, apiRequestId}});
-            });
-    };
-
-    const node = new (Node({current: Node1}))();
-    node.registerApiMethod({method: 'api.in', fn: function(message) {
-        return Object.assign({'api.in': 1}, message);
-    }});
-    node.registerApiMethod({method: 'api.out', fn: function(message) {
-        return Object.assign({'api.out': 1}, message);
-    }});
-    node.registerExternalMethod({method: 'external', fn: function(message) {
-        return Object.assign({'external': 1}, message);
-    }});
+    const node = new Node1();
+    node.registerApiMethod({
+        method: 'api.in',
+        fn: function(message) {
+            return Object.assign({'api.in': 1}, message);
+        }
+    });
+    node.registerApiMethod({
+        method: 'api.out',
+        fn: function(message) {
+            return Object.assign({'api.out': 1}, message);
+        }
+    });
+    node.registerExternalMethod({
+        method: 'external',
+        fn: function(message) {
+            return Object.assign({'external': 1}, message);
+        }
+    });
     return node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api'}})
         .then((message) => {
             return t.same(message, {'api.in': 1, 'api.out': 1, arg1: 1});
@@ -29,32 +36,44 @@ tap.test('api request - bypass external', (t) => {
 });
 
 tap.test('api request - received external request', (t) => {
-    const Node1 = function node() {
-        this.parent(this);
-        this.apiRequestMatchKeys = ['zumbaio'];
+    class Node1 extends Node {
+        constructor() {
+            super();
+            this.apiRequestMatchKeys = ['zumbaio'];
+        }
+        externalOut({message, meta}) {
+            message = Object.assign({}, message, {passedTrough: 'out>in'});
+            if (message.testApiRequestMatchKey) {
+                return this.externalIn({message: Object.assign({}, message, {zumbaio: meta.apiRequestId}), meta: {apiRequestMatchKey: meta.apiRequestMatchKey}});
+            } else {
+                return super.externalOut({message, meta});
+            }
+        }
     };
 
-    const node = new (Node({current: Node1}))();
-    Node1.prototype.externalOut = function({message, meta}) {
-        message = Object.assign({}, message, {passedTrough: 'out>in'});
-        if (message.testApiRequestMatchKey) {
-            return this.externalIn({message: Object.assign({}, message, {zumbaio: meta.apiRequestId}), meta: {apiRequestMatchKey: meta.apiRequestMatchKey}});
-        } else {
-            return this.parent.prototype.externalOut.call(this, {message, meta});
+    const node = new Node1();
+
+    node.registerExternalMethod({
+        method: 'pingLike',
+        fn: function(message) {
+            if (message.dontGoOut) {
+                return;
+            }
+            return Object.assign({'pingLike': 1}, message);
         }
-    };
-    node.registerExternalMethod({method: 'pingLike', fn: function(message) {
-        if (message.dontGoOut) {
-            return;
+    });
+    node.registerApiMethod({
+        method: 'api.in',
+        fn: function(message) {
+            return Object.assign({'api.in': 1}, message);
         }
-        return Object.assign({'pingLike': 1}, message);
-    }});
-    node.registerApiMethod({method: 'api.in', fn: function(message) {
-        return Object.assign({'api.in': 1}, message);
-    }});
-    node.registerApiMethod({method: 'api.out', fn: function(message) {
-        return Object.assign({'api.out': 1}, message);
-    }});
+    });
+    node.registerApiMethod({
+        method: 'api.out',
+        fn: function(message) {
+            return Object.assign({'api.out': 1}, message);
+        }
+    });
     return Promise.all([
         node.externalIn({message: {arg1: 1}, meta: {}})
             .then((ctx) => {

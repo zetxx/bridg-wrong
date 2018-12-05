@@ -1,11 +1,8 @@
 const tap = require('tap');
-const Node = require('../../lib/base.js');
+const Node = require('../../index');
 
-
-const Node1 = function node1() {
-    this.parent(this);
-};
-const node = new (Node({current: Node1}))();
+class Node1 extends Node {};
+const node = new Node1();
 
 node.registerApiMethod({method: 'existing.method', fn: function() {}});
 node.registerApiMethod({method: 'existing2.method2', fn: function() {}});
