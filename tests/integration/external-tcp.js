@@ -1,6 +1,5 @@
 const util = require('util');
 const net = require('net');
-const jsonRpcClient = require('../../tests/jsonrpc-client');
 const node = require('../../examples/api-http');
 
 function TcpServer() {

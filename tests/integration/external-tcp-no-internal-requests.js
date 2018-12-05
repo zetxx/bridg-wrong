@@ -1,71 +1,81 @@
-const util = require('util');
 const net = require('net');
-const jsonRpcClient = require('../../tests/jsonrpc-client');
-const node = require('../../examples/api-http');
+const Node = require('../../examples/api-http');
 
 const codec = {
     encode: (message) => Buffer.from(JSON.stringify(message), 'utf8'),
     decode: (message) => JSON.parse(message.toString())
 };
 
-function TcpServer() {
-    node.call(this);
-};
-util.inherits(TcpServer, node);
-
-TcpServer.prototype.start = function() {
-    this.connections = [];
-    this.connectionCounter = 1;
-    this.messageMatchKeys = ['alabal', 'tarkaleta'];
-
-    return new Promise((resolve, reject) => {
-        this.server = net.createServer((client) => {
-            const ctx = {id: this.connectionCounter++, client};
-            this.connections.push(ctx);
-            client.on('data', (data) => {
-                return this.externalIn({message: codec.decode(data), connectionId: ctx.id});
-            });
-        });
-        this.server.on('listening', resolve);
-        this.server.listen(34443);
-    });
-};
-
-TcpServer.prototype.findExternalConnection = function (connectionId) {
-    var connIdx = this.connections.findIndex(({id}) => connectionId === id);
-    if (connIdx >= 0) {
-        return Promise.resolve(this.connections[connIdx]);
+class TcpExternal extends Node {
+    constructor() {
+        super();
+        this.tcpExternalClients = [];
+        this.connectionCounter = 1;
+        this.messageMatchKeys = ['alabal', 'tarkaleta'];
     }
-    return Promise.reject(new Error('connectionNotFound'));
-};
+    start() {
+        return super.start()
+            .then(() => new Promise((resolve, reject) => {
+                this.tcpServer = net.createServer((client) => {
+                    const ctx = {id: this.connectionCounter++, client};
+                    this.tcpExternalClients.push(ctx);
+                    client.on('data', (data) => {
+                        return this.externalIn({message: codec.decode(data), connectionId: ctx.id});
+                    });
+                });
+                this.tcpServer.on('listening', resolve);
+                this.tcpServer.listen(34443);
+            }));
+    }
 
-TcpServer.prototype.externalIn = function({message, connectionId}) {
-    var {method, ...restOfMessage} = message;
-    return node.prototype.externalIn.call(this, {message: restOfMessage, meta: {connectionId, method}});
-};
+    findExternalConnection(connectionId) {
+        var connIdx = this.tcpExternalClients.findIndex(({id}) => connectionId === id);
+        if (connIdx >= 0) {
+            return Promise.resolve(this.tcpExternalClients[connIdx]);
+        }
+        return Promise.reject(new Error('connectionNotFound'));
+    }
 
-TcpServer.prototype.externalOut = function({message, meta: {connectionId}}) {
-    return this.findExternalConnection(connectionId)
-        .then(({client}) => client.write(codec.encode(message)))
-        .catch((e) => {
-            // connection error
-            console.error('externalOut', e);
-        });
-};
+    externalIn({message, connectionId}) {
+        var {method, ...restOfMessage} = message;
+        return super.externalIn({message: restOfMessage, meta: {connectionId, method}});
+    }
 
-var inst = new TcpServer();
+    externalOut({message, meta: {connectionId}}) {
+        return this.findExternalConnection(connectionId)
+            .then(({client}) => client.write(codec.encode(message)))
+            .catch((e) => {
+                // connection error
+                console.error('externalOut', e);
+            });
+    }
+
+    stop() {
+        return super.stop()
+            .then(() => {
+                this.tcpServer.close(() => {
+                    console.log('unref: TcpExternal');
+                    this.tcpServer.unref();
+                });
+                return this.tcpExternalClients.map(({client}) => client.end());
+            });
+    }
+}
+
+var inst = new TcpExternal();
 inst.registerApiMethod({
     method: 'abc.out',
-    fn: function (message){
+    fn: function(message) {
         return Object.assign({tag: 'out'}, message);
     }
 });
 inst.registerApiMethod({
     method: 'abc.in',
-    fn: function (message){
+    fn: function(message) {
         return Object.assign({api: 'in'}, message);
     }
 });
+
 inst.start()
     .then(() => {
         var conn1 = net.createConnection({port: 34443});
@@ -74,4 +84,7 @@ inst.start()
         });
         conn1.write(JSON.stringify({method: 'externalmethod', arg1: 1, arg2: 2}));
         console.log('started and listening');
-    });
+        setTimeout(() => inst.stop(), 3000);
+        return Promise.resolve();
+    })
+    .catch(console.error);

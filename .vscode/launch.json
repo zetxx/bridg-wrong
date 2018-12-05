@@ -35,14 +35,6 @@
             "program": "${workspaceFolder}/tests/integration/external-tcp-no-internal-requests.js",
             "outputCapture": "std",
             "protocol": "inspector"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "IT - no external",
-            "program": "${workspaceFolder}/tests/integration/no-external.js",
-            "outputCapture": "std",
-            "protocol": "inspector"
         }
     ]
 }
