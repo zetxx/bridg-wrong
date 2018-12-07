@@ -81,11 +81,11 @@ tap.test('api request - received external request', (t) => {
             }),
         node.externalIn({message: {arg1: 1}, meta: {method: 'pingLike'}})
             .then((ctx) => {
-                return t.same(ctx, {message: {arg1: 1, pingLike: 1, passedTrough: 'out>in'}, meta: {method: 'pingLike', apiRequestId: undefined, connectionId: undefined}}, 'external request, no apiRequestId matched, no testApiRequestMatchKey matched, external method executen, response should be returned');
+                return t.same(ctx, {message: {arg1: 1, pingLike: 1, passedTrough: 'out>in'}, meta: {method: 'pingLike'}}, 'external request, no apiRequestId matched, no testApiRequestMatchKey matched, external method executen, response should be returned');
             }),
         node.externalIn({message: {arg1: 1, dontGoOut: 1}, meta: {method: 'pingLike'}})
             .then((ctx) => {
-                return t.same(ctx, {message: {arg1: 1, dontGoOut: 1}, meta: {deadIn: 1}}, 'same as prev but response to ext. should not be returned');
+                return t.same(ctx, {message: {arg1: 1, dontGoOut: 1}, meta: {deadIn: 1, method: 'pingLike'}}, 'same as prev but response to ext. should not be returned');
             }),
         node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api'}})
             .then((message) => {
