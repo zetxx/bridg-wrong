@@ -1,7 +1,11 @@
 const tap = require('tap');
 const Node = require('../../index');
 
-class Node1 extends Node {};
+class Node1 extends Node {
+    log() {
+        return Promise.resolve();
+    }
+};
 const node = new Node1();
 
 node.registerApiMethod({method: 'existing.method', fn: function() {}});
