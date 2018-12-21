@@ -1,3 +1,7 @@
+## Build
+[![Build Status](https://travis-ci.com/zetxx/bridg-wrong.svg?branch=master)](https://travis-ci.com/zetxx/bridg-wrong)
+
+
 ## Calls and Overwrites
 ### calls
 - call `apiRequestReceived` when some internal request is received
