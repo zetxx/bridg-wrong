@@ -113,7 +113,7 @@ tap.test('api request - received external request', (t) => {
         .then((ctx) => {
             return t.same(ctx, {result: {arg1: 1, dontGoOut: 1}, meta: {deadIn: 1, method: 'pingLike'}}, 'same as prev but response to ext. should not be returned');
         })
-        .then(() => node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api'}}))
+        .then(() => node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api', timeout: 3000}}))
         .then(({error}) => {
             return t.same(error.code, 'methodTimedOut', 'method timeout');
         })
