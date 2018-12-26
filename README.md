@@ -13,7 +13,7 @@
     * `isNotification` - if truty api request will be marked as notification, response will be returned imidietely
     * `timeout` - after how many ms. request will expire
     * `apiRequestId` - used for response matching against api request
-    * `resolve | reject` - internal usage ony, it resolves api request
+    * `resolve` & `reject` - internal usage ony, it resolves api request
     * `deadIn` - internal usage only, used to trase if message is timeouted, or there is no such `apiRequestId` available for matching
 #### `apiRequestReceived({message, meta})`
 #### `apiResponseReceived({result, error, meta})`
