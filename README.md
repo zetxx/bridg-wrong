@@ -3,13 +3,24 @@
 
 
 ## Calls and Overwrites
-### calls
-- call `apiRequestReceived` when some internal request is received
-- will be called: `apiResponseReceived` when someone responded to api request
-### overwrites
-- `externalIn` - should be called right after external packages went in
-- `externalOut` - should be re-implemented, and called right before external package goes out
+- Internal requests
+    - call `apiRequestReceived` when some request is received
+    - will be called: `apiResponseReceived` when someone responded to api request
 
-### Api
-- `registerApiMethod` registers api method (searchApiMethod will search for 3 methods: method, method.in/out, in/out)
-- `registerExternalMethod` registers external method
+### API
+- `meta` can have following props `{method, isNotification, timeout, apiRequestId, resolve, reject, deadIn}`
+    * `method` - used to for tell what method to be executed
+    * `isNotification` - if truty api request will be marked as notification, response will be returned imidietely
+    * `timeout` - after how many ms. request will expire
+    * `apiRequestId` - used for response matching against api request
+    * `resolve | reject` - internal usage ony, it resolves api request
+    * `deadIn` - internal usage only, used to trase if message is timeouted, or there is no such `apiRequestId` available for matching
+#### `apiRequestReceived({message, meta})`
+#### `apiResponseReceived({result, error, meta})`
+#### `registerApiMethod({method, fn, meta})`
+#### `registerExternalMethod({method, fn, meta})`
+
+### Overwrites
+#### `externalIn({result, error, meta})` - should be called right after external packages went in
+#### `externalOut({result, error, meta})` - should be re-implemented, and called right before external package goes out
+
