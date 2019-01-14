@@ -18,6 +18,19 @@
 #### `apiRequestReceived({message, meta})`
 #### `apiResponseReceived({result, error, meta})`
 #### `registerApiMethod({method, fn, meta})`
+example:
+    ```javascript
+    var service = new Service({name: '...'});
+    service.registerExternalMethod({
+        method: 'networkCommand',
+        fn: function(message) {
+            return message;
+        }
+    });
+    service.start()
+        .then((e) => service.log('info', {text: 'service ready', ...service.getFingerprint()}))
+        .catch((e) => service.log('error', e));
+    ```
 #### `registerExternalMethod({method, fn, meta})`
 
 ### Overwrites
