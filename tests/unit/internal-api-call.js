@@ -72,11 +72,11 @@ tap.test('api request - received external request', (t) => {
 
     node.registerExternalMethod({
         method: 'pingLike',
-        fn: function(message) {
-            if (message.dontGoOut) {
+        fn: function({result}) {
+            if (result.dontGoOut) {
                 return;
             }
-            return Object.assign({'pingLike': 1}, message);
+            return Object.assign({'pingLike': 1}, result);
         }
     });
     node.registerApiMethod({
@@ -90,14 +90,14 @@ tap.test('api request - received external request', (t) => {
     });
     node.registerApiMethod({
         method: 'api.out',
-        fn: function(message) {
-            return Object.assign({'api.out': 1}, message);
+        fn: function({result, error}) {
+            return (error && {error}) || Object.assign({'api.out': 1}, result);
         }
     });
     node.registerExternalMethod({
         method: 'external',
-        fn: function(message) {
-            return Object.assign({'external': 1}, message);
+        fn: function({result}) {
+            return Object.assign({'external': 1}, result);
         }
     });
     return Promise.resolve()
@@ -105,7 +105,9 @@ tap.test('api request - received external request', (t) => {
         .then((ctx) => {
             return t.same(ctx, {result: {arg1: 1}, meta: {deadIn: 1}}, 'external request, no apiRequestId matched, no testApiRequestMatchKey matched, no method matched, should not response to external');
         })
-        .then(() => node.externalIn({result: {arg1: 1}, meta: {method: 'pingLike'}}))
+        .then(() => {
+            return node.externalIn({result: {arg1: 1}, meta: {method: 'pingLike'}});
+        })
         .then((ctx) => {
             return t.same(ctx, {result: {arg1: 1, pingLike: 1, passedTrough: 'out>in'}, meta: {method: 'pingLike'}}, 'external request, no apiRequestId matched, no testApiRequestMatchKey matched, external method executed, response should be returned');
         })
@@ -113,11 +115,15 @@ tap.test('api request - received external request', (t) => {
         .then((ctx) => {
             return t.same(ctx, {result: {arg1: 1, dontGoOut: 1}, meta: {deadIn: 1, method: 'pingLike'}}, 'same as prev but response to ext. should not be returned');
         })
-        .then(() => node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api', timeout: 3000}}))
+        .then(() => {
+            return node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api', timeout: 3000}});
+        })
         .then(({error}) => {
             return t.same(error.code, 'methodTimedOut', 'method timeout');
         })
-        .then(() => node.apiRequestReceived({message: {testApiRequestMatchKey: true, arg1: 1}, meta: {method: 'api'}}))
+        .then(() => {
+            return node.apiRequestReceived({message: {testApiRequestMatchKey: true, arg1: 1}, meta: {method: 'api'}});
+        })
         .then((message) => {
             return t.same(message, {'api.in': 1, 'api.out': 1, arg1: 1, testApiRequestMatchKey: true, zumbaio: message.zumbaio, passedTrough: 'out>in', external: 1}, 'test match by testApiRequestMatchKey');
         })
