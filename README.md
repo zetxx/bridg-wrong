@@ -28,7 +28,7 @@ service.registerExternalMethod({
     }
 });
 service.start()
-    .then((e) => service.log('info', {text: 'service ready', ...service.getFingerprint()}))
+    .then((e) => service.log('info', {description: 'service ready', ...service.getFingerprint()}))
     .catch((e) => service.log('error', e));
 ```
 #### `registerExternalMethod({method, fn, meta})`
