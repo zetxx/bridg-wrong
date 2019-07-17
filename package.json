@@ -5,7 +5,7 @@
     "name": "Elin Angelov",
     "url": "https://github.com/zetxx/bridg-wrong"
   },
-  "version": "3.1.0",
+  "version": "3.1.1",
   "devDependencies": {
     "tap": "*"
   },
