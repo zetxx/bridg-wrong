@@ -4,15 +4,15 @@ node_js:
 
 script: echo "Running tests against $(node -v) ..."
 
+branches:
+  only:
+    - master
+
 jobs:
   include:
     - stage: test
-      only:
-        - master
       script: npm run unit-test
     - stage: release
-      only:
-        - master
       deploy:
         provider: script
         skip_cleanup: true
