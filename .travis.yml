@@ -10,8 +10,9 @@ jobs:
       script: npm run unit-test
     - stage: release
       deploy:
+        only:
+          - master
         provider: script
         skip_cleanup: true
-        on: master
         script:
           - npx semantic-release
