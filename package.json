@@ -7,7 +7,8 @@
   },
   "version": "3.1.5",
   "devDependencies": {
-    "tap": "*"
+    "tap": "*",
+    "semantic-release": "^15.0.0"
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
