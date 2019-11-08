@@ -6,12 +6,12 @@ script: echo "Running tests against $(node -v) ..."
 
 jobs:
   include:
+    only:
+      - master
     - stage: test
       script: npm run unit-test
     - stage: release
       deploy:
-        only:
-          - master
         provider: script
         skip_cleanup: true
         script:
