@@ -8,14 +8,10 @@ jobs:
   include:
     - stage: test
       script: npm run unit-test
-    #- stage: prerelease
-    #  script: npm run semantic-release
     - stage: release
       deploy:
         provider: script
         skip_cleanup: true
+        on: master
         script:
           - npx semantic-release
-        email: zetxx@belogradchik.biz
-        api_key: $NPM_API_KEY
-        on: master
