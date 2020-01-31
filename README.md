@@ -36,4 +36,3 @@ service.start()
 ### Overwrites
 #### `externalIn({result, error, meta})` - should be called right after external packages went in
 #### `externalOut({result, error, meta})` - should be re-implemented, and called right before external package goes out
-
