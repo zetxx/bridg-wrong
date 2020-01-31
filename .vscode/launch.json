@@ -11,30 +11,6 @@
             "program": "${workspaceFolder}/tests/unit.js",
             "outputCapture": "std",
             "protocol": "inspector"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "IT - ext. http api http",
-            "program": "${workspaceFolder}/tests/integration/external-http-api-http.js",
-            "outputCapture": "std",
-            "protocol": "inspector"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "IT - ext. http api tcp",
-            "program": "${workspaceFolder}/tests/integration/external-http-api-tcp.js",
-            "outputCapture": "std",
-            "protocol": "inspector"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "IT - external tcp",
-            "program": "${workspaceFolder}/tests/integration/external-tcp-no-internal-requests.js",
-            "outputCapture": "std",
-            "protocol": "inspector"
         }
     ]
 }
