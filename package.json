@@ -6,12 +6,16 @@
     "name": "Elin Angelov",
     "url": "https://github.com/zetxx/bridg-wrong"
   },
-  "version": "3.1.6",
   "devDependencies": {
     "tap": "*",
     "semantic-release": "^17.0.1"
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
+  },
+  "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/zetxx/bridg-wrong/"
   }
 }
