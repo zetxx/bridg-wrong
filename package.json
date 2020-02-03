@@ -6,6 +6,9 @@
     "name": "Elin Angelov",
     "url": "https://github.com/zetxx/bridg-wrong"
   },
+  "dependencies": {
+    "flat": "*"
+  },
   "devDependencies": {
     "tap": "*",
     "semantic-release": "^17.0.1"
