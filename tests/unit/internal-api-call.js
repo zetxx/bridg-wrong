@@ -119,7 +119,7 @@ tap.test('api request - received external request', (t) => {
             return node.apiRequestReceived({message: {arg1: 1}, meta: {method: 'api', timeout: 3000}});
         })
         .then(({error}) => {
-            return t.same(error.code, 'methodTimedOut', 'method timeout');
+            return t.same(error.code, 'Method.TimedOut', 'method timeout');
         })
         .then(() => {
             return node.apiRequestReceived({message: {testApiRequestMatchKey: true, arg1: 1}, meta: {method: 'api'}});
