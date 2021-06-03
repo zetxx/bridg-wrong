@@ -14,7 +14,7 @@
     "semantic-release": "^17.0.1"
   },
   "scripts": {
-    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
+    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/base/"
   },
   "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
   "repository": {

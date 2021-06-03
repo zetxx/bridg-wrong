@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "UT",
-            "program": "${workspaceFolder}/tests/unit.js",
+            "name": "test unit",
+            "program": "${workspaceFolder}/tests/unit/base/test.index.js",
             "outputCapture": "std",
             "protocol": "inspector"
         }
