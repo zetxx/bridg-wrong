@@ -7,11 +7,11 @@
     "url": "https://github.com/zetxx/bridg-wrong"
   },
   "dependencies": {
-    "flat": "*"
+    "flat": "^5.0.2"
   },
   "devDependencies": {
-    "tap": "*",
-    "semantic-release": "^17.0.1"
+    "tap": "^15.0.9",
+    "semantic-release": "^17.4.3"
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/base/"

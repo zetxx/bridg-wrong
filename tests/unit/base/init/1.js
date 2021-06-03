@@ -1,5 +1,4 @@
-const {base} = require('../../base');
-require('../../echo');
+const {base} = require('../../../../index');
 
 module.exports = async() => {
     const A = new base();
