@@ -1,2 +1,3 @@
-require('./method/test.index');
+require('./error/test.error');
+require('./method/test.method');
 // require('./all/test.index');
