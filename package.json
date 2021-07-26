@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "tap": "^15.0.9",
-    "semantic-release": "^17.4.3"
+    "semantic-release": "^17.4.4"
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/base/"

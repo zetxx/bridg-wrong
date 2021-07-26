@@ -10,7 +10,10 @@
             "name": "test unit",
             "program": "${workspaceFolder}/tests/unit/",
             "outputCapture": "std",
-            "protocol": "inspector"
+            "protocol": "inspector",
+            "args": [
+                "--coverage-report=text"
+            ]
         }
     ]
 }
