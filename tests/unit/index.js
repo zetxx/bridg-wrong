@@ -1,3 +1,3 @@
 require('./error/test.error');
-require('./method/test.method');
-require('./request/test.request');
+require('./methods/test.method');
+require('./requests/test.request');

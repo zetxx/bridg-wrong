@@ -3,7 +3,7 @@ const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
-} = require('../../../lib/request/errors');
+} = require('../../../lib/requests/errors');
 
 const nodeId0 = Symbol('nodeId.0');
 const defaultWaitTime = 1000;
@@ -12,14 +12,14 @@ const nodeId1 = Symbol('nodeId.1');
 
 
 tap.test('Request', async(t) => {
-    const requests1 = require('../../../lib/request')({
+    const requests1 = require('../../../lib/requests')({
         config: {
             waitTime: defaultWaitTime
         },
         nodeId: nodeId0
     });
     // coverage
-    require('../../../lib/request')();
+    require('../../../lib/requests')();
 
     t.type(requests1, 'object', 'request Is object');
     t.type(requests1.add, 'function', 'request.add is function');
@@ -140,7 +140,7 @@ tap.test('Request', async(t) => {
     });
 
     t.test('Request 6', (tt) => {
-        const requests2 = require('../../../lib/request')({nodeId: nodeId0});
+        const requests2 = require('../../../lib/requests')({nodeId: nodeId0});
         const rq = requests2.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx}
