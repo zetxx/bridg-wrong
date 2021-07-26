@@ -1,5 +1,5 @@
 const tap = require('tap');
-const method = require('../../../lib/bridge')();
+const bridge = require('../../../lib/bridge')();
 
 tap.test('Bridge', (t) => {
     t.end();
