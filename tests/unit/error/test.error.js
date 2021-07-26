@@ -11,12 +11,14 @@ tap.test('Error', (t) => {
     const a1 = new A();
     const a2 = new A('msg-a-2');
     const a3 = new A('msg-a-3', {state: {a: 3}});
+    const a4 = new A('msg-a-3', {id: 5});
     const b1 = new B();
     t.equal(a1.message, 'msg-a', 'message should match');
     t.equal(a1.state, null, 'state should be null');
     t.equal(a2.message, 'msg-a-2', 'message should match');
     t.equal(a3.message, 'msg-a-3', 'message should match');
     t.same(a3.state, {a: 3}, 'state should match');
+    t.same(a4.id, 5, 'id should match');
     t.equal(a1.code, 'A', 'code should match');
     t.equal(b1.code, 'A.B', 'code should match');
     t.end();
