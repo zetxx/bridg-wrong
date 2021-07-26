@@ -10,6 +10,12 @@ tap.test('Method', (t) => {
     method.add({method: 'abc.in', fn: () => 1});
     
     t.throws(
+        () => method.find(),
+        new NotFound('method: undefined not found'),
+        'should throw'
+    );
+
+    t.throws(
         () => method.find({direction: 'in', packet: {meta: {method: 'abcd'}}}),
         new NotFound('method: abcd not found'),
         'should throw'

@@ -1,7 +1,8 @@
 const tap = require('tap');
 const {
     NotFound,
-    WaitTimeExpired
+    WaitTimeExpired,
+    ForceDestroy
 } = require('../../../lib/request/errors');
 
 const nodeId0 = Symbol('nodeId.0');
@@ -9,67 +10,89 @@ const defaultWaitTime = 1000;
 let idx = 0;
 const nodeId1 = Symbol('nodeId.1');
 
-tap.test('Request', async(t) => {
 
+tap.test('Request', async(t) => {
     const requests1 = require('../../../lib/request')({
         config: {
             waitTime: defaultWaitTime
         },
         nodeId: nodeId0
     });
+    // coverage
+    require('../../../lib/request')();
+
     t.type(requests1, 'object', 'request Is object');
     t.type(requests1.add, 'function', 'request.add is function');
     t.type(requests1.find, 'function', 'request.find is function');
     t.type(requests1.fulfill, 'function', 'request.call is function');
     t.type(requests1.fulfill, 'function', 'request.call is function');
-    const rc = requests1.add({
-        onLocalReject: (e) => e,
-        match: {idx: ++idx, nodeId: nodeId1}
+
+    t.test('Request 1', async(tt) => {
+        const rq = requests1.add({
+            onLocalReject: (e) => e,
+            match: {idx: ++idx, nodeId: nodeId1}
+        });
+        tt.same(rq.idx > 0, true, 'index should be greater than 0');
+        tt.same(rq.config, {waitTime: defaultWaitTime}, 'config should match');
+        tt.same(rq.nodeId, nodeId0, 'node-id should match');
+        tt.same(rq.nodeId, nodeId0, 'node-id should match');
+        tt.same(rq.promise instanceof Promise, true, 'should be instance of promise');
+        tt.type(rq.resolve, 'function', 'resole should be function');
+        tt.type(rq.reject, 'function', 'reject should be function');
+        tt.type(rq.timeout, 'object', 'timeout should be function');
+    
+        requests1.find({meta: {idx: rq.idx}});
+        tt.type(
+            requests1.find(),
+            'undefined',
+            'should not find request'
+        );
+        tt.type(
+            requests1.find({}),
+            'undefined',
+            'should not find request'
+        );
+        tt.type(
+            requests1.find({meta: {}}),
+            'undefined',
+            'should not find request'
+        );
+        tt.type(
+            requests1.find({meta: {idx: rq.idx}}),
+            'object',
+            'should find request'
+        );
+        tt.type(
+            requests1.find({meta: {idx: rq.idx, nodeId: nodeId0}}),
+            'object',
+            'should find request'
+        );
+        tt.type(
+            requests1.find({meta: {idx: -1}}),
+            'undefined',
+            'should not find request'
+        );
+        tt.type(
+            requests1.find({meta: {idx: rq.idx, nodeId: 'nomatch'}}),
+            'undefined',
+            'should not find request'
+        );
+        tt.throws(() => requests1.fulfill({}), new NotFound(), 'should trow');
+        const fn1 = requests1.fulfill(rq);
+        tt.type(
+            fn1,
+            'function',
+            'should return function'
+        );
+        fn1({a: 2});
+        tt.same(await rq.promise, {a: 2}, 'should be same');
+        tt.end();
     });
-    t.same(rc.idx > 0, true, 'index should be greater than 0');
-    t.same(rc.config, {waitTime: defaultWaitTime}, 'config should match');
-    t.same(rc.nodeId, nodeId0, 'node-id should match');
-    t.same(rc.nodeId, nodeId0, 'node-id should match');
-    t.same(rc.promise instanceof Promise, true, 'should be instance of promise');
-    t.type(rc.resolve, 'function', 'resole should be function');
-    t.type(rc.reject, 'function', 'reject should be function');
-    t.type(rc.timeout, 'object', 'timeout should be function');
-
-    requests1.find({meta: {idx: rc.idx}});
-    t.type(
-        requests1.find({meta: {idx: rc.idx}}),
-        'object',
-        'should find request'
-    );
-    t.type(
-        requests1.find({meta: {idx: rc.idx, nodeId: nodeId0}}),
-        'object',
-        'should find request'
-    );
-    t.type(
-        requests1.find({meta: {idx: -1}}),
-        'undefined',
-        'should not find request'
-    );
-    t.type(
-        requests1.find({meta: {idx: rc.idx, nodeId: 'nomatch'}}),
-        'undefined',
-        'should not find request'
-    );
-    t.throws(() => requests1.fulfill(), new NotFound(), 'should trow');
-    const fn1 = requests1.fulfill(rc);
-    t.type(
-        fn1,
-        'function',
-        'should return function'
-    );
-    fn1({a: 2});
-    t.same(await rc.promise, {a: 2}, 'should be same');
-
-    t.test('Request.Timeout', (tt) => {
-        const rc2 = requests1.add({
+    
+    t.test('Request 2 Timeout', (tt) => {
+        const rq = requests1.add({
             onLocalReject: ({error}) => {
-                tt.same(rc2.config, {waitTime: 550}, 'config should match');
+                tt.same(rq.config, {waitTime: 550}, 'config should match');
                 tt.same(error, new WaitTimeExpired(), 'should be expire time error');
                 tt.end();
             },
@@ -84,15 +107,46 @@ tap.test('Request', async(t) => {
         });
     });
  
-    t.test('Request resolve with error', (tt) => {
-        const rc3 = requests1.add({
+    t.test('Request 3 resolve with error', (tt) => {
+        const rq = requests1.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx, nodeId: nodeId1}
         });
         const errorMsg = {error: new Error()};
-        const fn2 = requests1.fulfill(rc3);
-        tt.rejects(rc3.promise, errorMsg);
+        const fn2 = requests1.fulfill(rq);
+        tt.rejects(rq.promise, errorMsg);
         fn2(errorMsg);
+        tt.end();
+    });
+
+    t.test('Request 4', (tt) => {
+        const rq = requests1.add({
+            onLocalReject: (e) => e,
+            match: {idx: ++idx, nodeId: nodeId1}
+        });
+        const fn = requests1.fulfill(rq);
+        tt.equal(fn({}), undefined, 'should return void');
+        tt.end();
+    });
+
+    t.test('Request 5', (tt) => {
+        const rq = requests1.add({
+            onLocalReject: (e) => e,
+            match: {idx: ++idx, nodeId: nodeId1}
+        });
+        const fn = requests1.fulfill(rq);
+        tt.equal(fn(), undefined, 'should return void');
+        tt.end();
+    });
+
+    t.test('Request 6', (tt) => {
+        const requests2 = require('../../../lib/request')({nodeId: nodeId0});
+        const rq = requests2.add({
+            onLocalReject: (e) => e,
+            match: {idx: ++idx}
+        });
+        tt.rejects(rq.promise, {error: new ForceDestroy()}, 'should reject');
+        requests2.destroy();
         tt.end();
     });
 
