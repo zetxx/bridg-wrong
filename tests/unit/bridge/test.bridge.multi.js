@@ -5,8 +5,8 @@ tap.test('Bridge simulations', (l0) => {
     const bridgeA = new Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
     const bridgeB = new Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
 
-    bridgeA.join({other: bridgeB});
-    bridgeB.join({other: bridgeA});
+    bridgeA.merge({other: bridgeB});
+    bridgeB.merge({other: bridgeA});
 
     bridgeA.method.add({
         method: 'a.in',
@@ -28,7 +28,8 @@ tap.test('Bridge simulations', (l0) => {
         }
     });
     // R - request
-    // A.a.in means instance.method.direction
+    // A.a.in means instance.method.direction,
+    // instance eg. bridgeA or bridgeB
     // R^ - response
     // match, add - request operations
     l0.test('R->A.a.in->add->B.a.out->add->B.a.in->match->A.a.out->R^', async(l1) => {

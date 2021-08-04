@@ -4,7 +4,7 @@ const Bridge = require('../../../lib/bridge');
 tap.test('Bridge', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
         const bridge = new Bridge();
-        bridge.join({});
+        bridge.merge({});
         bridge.destroy();
         t.end();
     });
