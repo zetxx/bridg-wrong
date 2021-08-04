@@ -4,7 +4,7 @@ const Bridge = require('../../../lib/bridge');
 tap.test('Bridge', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
         const bridge = new Bridge();
-        bridge.start({});
+        bridge.join({});
         bridge.destroy();
         t.end();
     });
@@ -141,7 +141,6 @@ tap.test('Bridge', (l0) => {
             l2.end();
         });
 
-        bridge.destroy();
         l1.end();
     });
 
