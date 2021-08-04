@@ -22,6 +22,8 @@ tap.test('Request', async(t) => {
     require('../../../lib/requests')();
 
     t.type(requests1, 'object', 'request Is object');
+    t.type(requests1.len, 'function', 'request.len is function');
+    t.equal(requests1.len(), 0, '0 requests');
     t.type(requests1.add, 'function', 'request.add is function');
     t.type(requests1.find, 'function', 'request.find is function');
     t.type(requests1.fulfill, 'function', 'request.call is function');
