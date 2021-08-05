@@ -5,8 +5,8 @@ tap.test('Bridge simulations', (l0) => {
     const bridgeA = new Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
     const bridgeB = new Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
 
-    bridgeA.merge({other: bridgeB});
-    bridgeB.merge({other: bridgeA});
+    bridgeA.intersect({other: bridgeB});
+    bridgeB.intersect({other: bridgeA});
 
     bridgeA.method.add({
         method: 'a.in',
