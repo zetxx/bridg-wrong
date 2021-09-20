@@ -34,7 +34,7 @@ tap.test('Bridge simulations', (l0) => {
     // match, add - request operations
     l0.test('R->A.a.in->add->B.a.out->add->B.a.in->match->A.a.out->R^', async(l1) => {
 
-        let request = await bridgeA.pass({
+        await bridgeA.pass({
             packet: {
                 payload: 3,
                 meta: {method: 'a'}
@@ -50,7 +50,7 @@ tap.test('Bridge simulations', (l0) => {
                 },
                 direction: 'in'
             });
-        }, 10000);
+        }, 5000);
 
         l1.end();
     });
