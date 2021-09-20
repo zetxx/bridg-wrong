@@ -79,7 +79,7 @@ tap.test('Request', async(t) => {
             'undefined',
             'should not find request'
         );
-        tt.throws(() => requests1.fulfill({}), new NotFound(), 'should trow');
+        tt.throws(() => requests1.fulfill({}), NotFound.create(''), 'should trow');
         const fn1 = requests1.fulfill(rq);
         tt.type(
             fn1,
@@ -95,7 +95,7 @@ tap.test('Request', async(t) => {
         const rq = requests1.add({
             onLocalReject: ({error}) => {
                 tt.same(rq.config, {waitTime: 550}, 'config should match');
-                tt.same(error, new WaitTimeExpired(), 'should be expire time error');
+                tt.same(error, WaitTimeExpired.create(''), 'should be expire time error');
                 tt.end();
             },
             match: {idx: ++idx, nodeId: nodeId1},
@@ -147,7 +147,7 @@ tap.test('Request', async(t) => {
             onLocalReject: (e) => e,
             match: {idx: ++idx}
         });
-        tt.rejects(rq.promise, {error: new ForceDestroy()}, 'should reject');
+        tt.rejects(rq.promise, {error: ForceDestroy.create('')}, 'should reject');
         requests2.destroy();
         tt.end();
     });
