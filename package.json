@@ -14,7 +14,7 @@
     "tap": "^15.0.9"
   },
   "scripts": {
-    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/base/"
+    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
   },
   "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
   "repository": {
