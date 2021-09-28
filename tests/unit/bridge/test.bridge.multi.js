@@ -52,7 +52,7 @@ tap.test('Bridge simulations', (l0) => {
                 },
                 direction: 'in'
             });
-        }, 5000);
+        }, 1000);
 
         l1.end();
     });
