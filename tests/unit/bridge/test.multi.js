@@ -1,7 +1,7 @@
 const tap = require('tap');
 const Bridge = require('../../../lib/bridge');
 
-tap.test('Bridge simulations', (l0) => {
+tap.test('Multi', (l0) => {
     const bridgeA = new Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
     const bridgeB = new Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
 
@@ -32,7 +32,7 @@ tap.test('Bridge simulations', (l0) => {
     // instance eg. bridgeA or bridgeB
     // R^ - response
     // match, add - request operations
-    l0.test('R->A.a.in->B.a.out->wait |B.a.in->match->A.a.out->R^', async(l1) => {
+    l0.test('R->A.a.in->B.a.out->wait :: B.a.in->match->A.a.out->R^', async(l1) => {
 
         // R->A.a.in->B.a.out->wait
         await bridgeA.pass({

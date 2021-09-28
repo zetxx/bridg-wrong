@@ -1,7 +1,7 @@
 const tap = require('tap');
 const Bridge = require('../../../lib/bridge');
 
-tap.test('Bridge', (l0) => {
+tap.test('Single', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
         const bridge = new Bridge();
         bridge.intersect({});
