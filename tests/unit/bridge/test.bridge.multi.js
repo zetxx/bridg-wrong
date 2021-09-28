@@ -32,8 +32,9 @@ tap.test('Bridge simulations', (l0) => {
     // instance eg. bridgeA or bridgeB
     // R^ - response
     // match, add - request operations
-    l0.test('R->A.a.in->add->B.a.out->add->B.a.in->match->A.a.out->R^', async(l1) => {
+    l0.test('R->A.a.in->B.a.out->wait |B.a.in->match->A.a.out->R^', async(l1) => {
 
+        // R->A.a.in->B.a.out->wait
         await bridgeA.pass({
             packet: {
                 payload: 3,
@@ -43,6 +44,7 @@ tap.test('Bridge simulations', (l0) => {
         });
 
         setTimeout(async() => {
+            // B.a.in->match->A.a.out->R^
             await bridgeB.pass({
                 packet: {
                     payload: 3,
