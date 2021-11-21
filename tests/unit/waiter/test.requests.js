@@ -3,7 +3,7 @@ const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
-} = require('../../../lib/requests/errors');
+} = require('../../../lib/waiter/errors');
 
 const nodeId0 = Symbol('nodeId.0');
 const defaultWaitTime = 1000;
@@ -11,26 +11,26 @@ let idx = 0;
 const nodeId1 = Symbol('nodeId.1');
 
 
-tap.test('Request', async(t) => {
-    const requests1 = require('../../../lib/requests')({
+tap.test('Waiter', async(t) => {
+    const waiters1 = require('../../../lib/waiter')({
         config: {
             waitTime: defaultWaitTime
         },
         nodeId: nodeId0
     });
     // coverage
-    require('../../../lib/requests')();
+    require('../../../lib/waiter')();
 
-    t.type(requests1, 'object', 'request Is object');
-    t.type(requests1.len, 'function', 'request.len is function');
-    t.equal(requests1.len(), 0, '0 requests');
-    t.type(requests1.add, 'function', 'request.add is function');
-    t.type(requests1.find, 'function', 'request.find is function');
-    t.type(requests1.fulfill, 'function', 'request.call is function');
-    t.type(requests1.fulfill, 'function', 'request.call is function');
+    t.type(waiters1, 'object', 'waiter Is object');
+    t.type(waiters1.len, 'function', 'waiter.len is function');
+    t.equal(waiters1.len(), 0, '0 waiters');
+    t.type(waiters1.add, 'function', 'waiter.add is function');
+    t.type(waiters1.find, 'function', 'waiter.find is function');
+    t.type(waiters1.fulfill, 'function', 'waiter.call is function');
+    t.type(waiters1.fulfill, 'function', 'waiter.call is function');
 
-    t.test('Request 1', async(tt) => {
-        const rq = requests1.add({
+    t.test('waiter 1', async(tt) => {
+        const rq = waiters1.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx, nodeId: nodeId1}
         });
@@ -43,44 +43,44 @@ tap.test('Request', async(t) => {
         tt.type(rq.reject, 'function', 'reject should be function');
         tt.type(rq.timeout, 'object', 'timeout should be function');
     
-        requests1.find({meta: {idx: rq.idx}});
+        waiters1.find({meta: {idx: rq.idx}});
         tt.type(
-            requests1.find(),
+            waiters1.find(),
             'undefined',
-            'should not find request'
+            'should not find waiter'
         );
         tt.type(
-            requests1.find({}),
+            waiters1.find({}),
             'undefined',
-            'should not find request'
+            'should not find waiter'
         );
         tt.type(
-            requests1.find({meta: {}}),
+            waiters1.find({meta: {}}),
             'undefined',
-            'should not find request'
+            'should not find waiter'
         );
         tt.type(
-            requests1.find({meta: {idx: rq.idx}}),
+            waiters1.find({meta: {idx: rq.idx}}),
             'object',
-            'should find request'
+            'should find waiter'
         );
         tt.type(
-            requests1.find({meta: {idx: rq.idx, nodeId: nodeId0}}),
+            waiters1.find({meta: {idx: rq.idx, nodeId: nodeId0}}),
             'object',
-            'should find request'
+            'should find waiter'
         );
         tt.type(
-            requests1.find({meta: {idx: -1}}),
+            waiters1.find({meta: {idx: -1}}),
             'undefined',
-            'should not find request'
+            'should not find waiter'
         );
         tt.type(
-            requests1.find({meta: {idx: rq.idx, nodeId: 'nomatch'}}),
+            waiters1.find({meta: {idx: rq.idx, nodeId: 'nomatch'}}),
             'undefined',
-            'should not find request'
+            'should not find waiter'
         );
-        tt.throws(() => requests1.fulfill({}), NotFound.create(''), 'should trow');
-        const fn1 = requests1.fulfill(rq);
+        tt.throws(() => waiters1.fulfill({}), NotFound.create(''), 'should trow');
+        const fn1 = waiters1.fulfill(rq);
         tt.type(
             fn1,
             'function',
@@ -91,8 +91,8 @@ tap.test('Request', async(t) => {
         tt.end();
     });
     
-    t.test('Request 2 Timeout', (tt) => {
-        const rq = requests1.add({
+    t.test('Waiter 2 Timeout', (tt) => {
+        const rq = waiters1.add({
             onLocalReject: ({error}) => {
                 tt.same(rq.config, {waitTime: 550}, 'config should match');
                 tt.same(error, WaitTimeExpired.create(''), 'should be expire time error');
@@ -109,46 +109,46 @@ tap.test('Request', async(t) => {
         });
     });
  
-    t.test('Request 3 resolve with error', (tt) => {
-        const rq = requests1.add({
+    t.test('Waiter 3 resolve with error', (tt) => {
+        const rq = waiters1.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx, nodeId: nodeId1}
         });
         const errorMsg = {error: new Error()};
-        const fn2 = requests1.fulfill(rq);
+        const fn2 = waiters1.fulfill(rq);
         tt.rejects(rq.promise, errorMsg);
         fn2(errorMsg);
         tt.end();
     });
 
-    t.test('Request 4', (tt) => {
-        const rq = requests1.add({
+    t.test('Waiter 4', (tt) => {
+        const rq = waiters1.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx, nodeId: nodeId1}
         });
-        const fn = requests1.fulfill(rq);
+        const fn = waiters1.fulfill(rq);
         tt.equal(fn({}), undefined, 'should return void');
         tt.end();
     });
 
-    t.test('Request 5', (tt) => {
-        const rq = requests1.add({
+    t.test('Waiter 5', (tt) => {
+        const rq = waiters1.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx, nodeId: nodeId1}
         });
-        const fn = requests1.fulfill(rq);
+        const fn = waiters1.fulfill(rq);
         tt.equal(fn(), undefined, 'should return void');
         tt.end();
     });
 
-    t.test('Request 6', (tt) => {
-        const requests2 = require('../../../lib/requests')({nodeId: nodeId0});
-        const rq = requests2.add({
+    t.test('Waiter 6', (tt) => {
+        const waiters2 = require('../../../lib/waiter')({nodeId: nodeId0});
+        const rq = waiters2.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx}
         });
         tt.rejects(rq.promise, {error: ForceDestroy.create('')}, 'should reject');
-        requests2.destroy();
+        waiters2.destroy();
         tt.end();
     });
 
