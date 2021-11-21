@@ -1,4 +1,4 @@
 // require('./methods/test.methods');
-// require('./requests/test.requests');
+require('./waiters/test.waiters');
 // require('./bridge/test.single');
-require('./bridge/test.multi');
+// require('./bridge/test.multi');
