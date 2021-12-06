@@ -3,7 +3,7 @@
 
 
 ## Calls and Overwrites
-- Internal requests
+- Internal Waiters (requests)
     - call `apiRequestReceived` when some request is received
     - will be called: `apiResponseReceived` when someone responded to api request
 

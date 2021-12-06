@@ -2,13 +2,13 @@ const tap = require('tap');
 const Bridge = require('../../../lib/bridge');
 
 tap.test('Multi', (l0) => {
-    const bridgeA = new Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
-    const bridgeB = new Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
+    const bridgeA = Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
+    const bridgeB = Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
 
     bridgeA.intersect({other: bridgeB});
     bridgeB.intersect({other: bridgeA});
 
-    bridgeA.method.add({
+    bridgeA.methods.add({
         method: 'a.in',
         fn: ({payload, error}) => {
             if (error) {
@@ -18,7 +18,7 @@ tap.test('Multi', (l0) => {
         }
     });
 
-    bridgeB.method.add({
+    bridgeB.methods.add({
         method: 'a.out',
         fn: ({payload, error}) => {
             if (error) {
@@ -28,7 +28,7 @@ tap.test('Multi', (l0) => {
         }
     });
     // R - request
-    // A.a.in means instance.method.direction,
+    // A.a.in means instance.methods.direction,
     // instance eg. bridgeA or bridgeB
     // R^ - response
     // match, add - request operations

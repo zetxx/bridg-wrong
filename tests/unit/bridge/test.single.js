@@ -3,15 +3,15 @@ const Bridge = require('../../../lib/bridge');
 
 tap.test('Single', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
-        const bridge = new Bridge();
+        const bridge = Bridge();
         bridge.intersect({});
         bridge.destroy();
         t.end();
     });
 
     l0.test('One Vector', (l1) => {
-        const bridge = new Bridge({config: {id: 'bridgeA', request: {waitTime: 5000}}});
-        bridge.method.add({
+        const bridge = Bridge({config: {id: 'bridgeA', request: {waitTime: 5000}}});
+        bridge.methods.add({
             method: 'a.in',
             fn: ({payload, error}) => {
                 if (error) {
@@ -20,7 +20,7 @@ tap.test('Single', (l0) => {
                 return payload + 1;
             }
         });
-        bridge.method.add({
+        bridge.methods.add({
             method: 'a.out',
             fn: ({payload, error}) => {
                 return payload + 43;
@@ -34,7 +34,7 @@ tap.test('Single', (l0) => {
                 },
                 direction: 'out'
             });
-            setTimeout(bridge.request.fulfill(request), 100);
+            setTimeout(bridge.waiters.fulfill(request), 100);
             t.resolves(request.promise, 'should resolve');
             t.end();
         });
