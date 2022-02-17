@@ -1,17 +1,17 @@
 const tap = require('tap');
-const Bridge = require('../../../lib/bridge');
+const Router = require('../../../lib/router');
 
 tap.test('Single', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
-        const bridge = Bridge();
-        bridge.intersect({});
-        bridge.destroy();
+        const router = Router();
+        router.intersect({});
+        router.destroy();
         t.end();
     });
 
     l0.test('One Vector', (l1) => {
-        const bridge = Bridge({config: {id: 'A', request: {waitTime: 5000}}});
-        bridge.methods.add({
+        const router = Router({config: {id: 'A', request: {waitTime: 5000}}});
+        router.methods.add({
             method: 'a.in',
             fn: ({payload, error}) => {
                 if (error) {
@@ -20,27 +20,27 @@ tap.test('Single', (l0) => {
                 return payload + 1;
             }
         });
-        bridge.methods.add({
+        router.methods.add({
             method: 'a.out',
             fn: ({payload, error}) => {
                 return payload + 43;
             }
         });
         l1.test('outbound Direct Full fill after 100 ms', async(t) => {
-            let request = await bridge.pass({
+            let request = await router.pass({
                 packet: {
                     payload: 3,
                     meta: {method: 'a'}
                 },
                 direction: 'out'
             });
-            setTimeout(bridge.requests.fulfill(request), 100);
+            setTimeout(router.requests.fulfill(request), 100);
             t.resolves(request.promise, 'should resolve');
             t.end();
         });
 
         l1.test('outbound resolves with error', async(t) => {
-            let requestOut = await bridge.pass({
+            let requestOut = await router.pass({
                 packet: {
                     payload: 3,
                     meta: {method: 'a'}
@@ -53,7 +53,7 @@ tap.test('Single', (l0) => {
 
         l1.test('outbound resolves/Rejects based on request meta.method', async(l2) => {
             l2.test('Resolve without method set', async(t) => {
-                let requestOut = await bridge.pass({
+                let requestOut = await router.pass({
                     packet: {
                         payload: 3,
                         meta: {method: 'a'}
@@ -62,7 +62,7 @@ tap.test('Single', (l0) => {
                 });
                 const p = new Promise((resolve, reject) => {
                     setTimeout(async() => {
-                        let requestIn = await bridge.pass({
+                        let requestIn = await router.pass({
                             packet: {
                                 payload: 3,
                                 meta: {idx: requestOut.idx, tag: requestOut.tag}
@@ -82,7 +82,7 @@ tap.test('Single', (l0) => {
             });
 
             l2.test('Resolve whit method set', async(t) => {
-                let requestOut = await bridge.pass({
+                let requestOut = await router.pass({
                     packet: {
                         payload: 3,
                         meta: {method: 'a'}
@@ -91,7 +91,7 @@ tap.test('Single', (l0) => {
                 });
                 const p = new Promise((resolve, reject) => {
                     setTimeout(async() => {
-                        let requestIn = await bridge.pass({
+                        let requestIn = await router.pass({
                             packet: {
                                 payload: 3,
                                 meta: {idx: requestOut.idx, tag: requestOut.tag, method: 'a'}
@@ -111,7 +111,7 @@ tap.test('Single', (l0) => {
             });
 
             l2.test('Rejects since incorrect method passed', async(t) => {
-                let requestOut = await bridge.pass({
+                let requestOut = await router.pass({
                     packet: {
                         payload: 3,
                         meta: {method: 'a'}
@@ -121,7 +121,7 @@ tap.test('Single', (l0) => {
                 t.rejects(requestOut.promise, 'should rejects');
                 const p = new Promise((resolve, reject) => {
                     setTimeout(async() => {
-                        let requestIn = await bridge.pass({
+                        let requestIn = await router.pass({
                             packet: {
                                 payload: 3,
                                 meta: {idx: requestOut.idx, tag: requestOut.tag, method: 'ab'}

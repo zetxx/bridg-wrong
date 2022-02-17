@@ -1,5 +1,5 @@
 module.exports = {
-    Bridge: require('./lib/bridge'),
+    Router: require('./lib/router'),
     Methods: require('./lib/methods'),
     Waiters: require('./lib/waiters')
 };

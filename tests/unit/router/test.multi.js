@@ -1,9 +1,9 @@
 const tap = require('tap');
-const Bridge = require('../../../lib/bridge');
+const Router = require('../../../lib/router');
 
 tap.test('Multi', (l0) => {
-    const A = Bridge({config: {id: 'A', request: {waitTime: 200000000}}});
-    const B = Bridge({config: {id: 'B', request: {waitTime: 200000000}}});
+    const A = Router({config: {id: 'A', request: {waitTime: 200000000}}});
+    const B = Router({config: {id: 'B', request: {waitTime: 200000000}}});
 
     A.intersect({other: B});
     B.intersect({other: A});
