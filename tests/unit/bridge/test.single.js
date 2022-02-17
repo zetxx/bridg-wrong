@@ -10,7 +10,7 @@ tap.test('Single', (l0) => {
     });
 
     l0.test('One Vector', (l1) => {
-        const bridge = Bridge({config: {id: 'bridgeA', request: {waitTime: 5000}}});
+        const bridge = Bridge({config: {id: 'A', request: {waitTime: 5000}}});
         bridge.methods.add({
             method: 'a.in',
             fn: ({payload, error}) => {

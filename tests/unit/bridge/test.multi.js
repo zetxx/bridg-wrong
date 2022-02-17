@@ -2,13 +2,13 @@ const tap = require('tap');
 const Bridge = require('../../../lib/bridge');
 
 tap.test('Multi', (l0) => {
-    const bridgeA = Bridge({config: {id: 'bridgeA', request: {waitTime: 200000000}}});
-    const bridgeB = Bridge({config: {id: 'bridgeB', request: {waitTime: 200000000}}});
+    const A = Bridge({config: {id: 'A', request: {waitTime: 200000000}}});
+    const B = Bridge({config: {id: 'B', request: {waitTime: 200000000}}});
 
-    bridgeA.intersect({other: bridgeB});
-    bridgeB.intersect({other: bridgeA});
+    A.intersect({other: B});
+    B.intersect({other: A});
 
-    bridgeA.methods.add({
+    A.methods.add({
         method: 'a.in',
         fn: ({payload, error}) => {
             if (error) {
@@ -18,7 +18,7 @@ tap.test('Multi', (l0) => {
         }
     });
 
-    bridgeB.methods.add({
+    B.methods.add({
         method: 'a.out',
         fn: ({payload, error}) => {
             if (error) {
@@ -29,13 +29,13 @@ tap.test('Multi', (l0) => {
     });
     // R - request
     // A.a.in means instance.methods.direction,
-    // instance eg. bridgeA or bridgeB
+    // instance eg. A or B
     // R^ - response
     // match, add - request operations
     l0.test('R->A.a.in->B.a.out->wait :: B.a.in->match->A.a.out->R^', async(l1) => {
 
         // R->A.a.in->B.a.out->wait
-        await bridgeA.pass({
+        await A.pass({
             packet: {
                 payload: 3,
                 meta: {method: 'a'}
@@ -45,7 +45,7 @@ tap.test('Multi', (l0) => {
 
         setTimeout(async() => {
             // B.a.in->match->A.a.out->R^
-            await bridgeB.pass({
+            await B.pass({
                 packet: {
                     payload: 3,
                     meta: {idx: 1}
