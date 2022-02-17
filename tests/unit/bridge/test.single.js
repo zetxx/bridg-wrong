@@ -65,7 +65,7 @@ tap.test('Single', (l0) => {
                         let requestIn = await bridge.pass({
                             packet: {
                                 payload: 3,
-                                meta: {idx: requestOut.idx, nodeId: requestOut.nodeId}
+                                meta: {idx: requestOut.idx, tag: requestOut.tag}
                             },
                             direction: 'in'
                         });
@@ -94,7 +94,7 @@ tap.test('Single', (l0) => {
                         let requestIn = await bridge.pass({
                             packet: {
                                 payload: 3,
-                                meta: {idx: requestOut.idx, nodeId: requestOut.nodeId, method: 'a'}
+                                meta: {idx: requestOut.idx, tag: requestOut.tag, method: 'a'}
                             },
                             direction: 'in'
                         });
@@ -124,7 +124,7 @@ tap.test('Single', (l0) => {
                         let requestIn = await bridge.pass({
                             packet: {
                                 payload: 3,
-                                meta: {idx: requestOut.idx, nodeId: requestOut.nodeId, method: 'ab'}
+                                meta: {idx: requestOut.idx, tag: requestOut.tag, method: 'ab'}
                             },
                             direction: 'in'
                         });

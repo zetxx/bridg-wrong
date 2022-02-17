@@ -5,10 +5,10 @@ const {
     ForceDestroy
 } = require('../../../lib/waiters/errors');
 
-const nodeId0 = Symbol('nodeId.0');
+const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
 let idx = 0;
-const nodeId1 = Symbol('nodeId.1');
+const tag1 = Symbol('tag.1');
 
 
 tap.test('Waiter', async(t) => {
@@ -16,7 +16,7 @@ tap.test('Waiter', async(t) => {
         config: {
             waitTime: defaultWaitTime
         },
-        nodeId: nodeId0
+        tag: tag0
     });
     // coverage
     require('../../../lib/waiters')();
@@ -32,12 +32,12 @@ tap.test('Waiter', async(t) => {
     t.test('Waiter 1', async(tt) => {
         const rq = waiters1.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, nodeId: nodeId1}
+            match: {idx: ++idx, tag: tag1}
         });
         tt.same(rq.idx > 0, true, 'index should be greater than 0');
         tt.same(rq.config, {waitTime: defaultWaitTime}, 'config should match');
-        tt.same(rq.nodeId, nodeId0, 'node-id should match');
-        tt.same(rq.nodeId, nodeId0, 'node-id should match');
+        tt.same(rq.tag, tag0, 'tag should match');
+        tt.same(rq.tag, tag0, 'tag should match');
         tt.same(rq.promise instanceof Promise, true, 'should be instance of promise');
         tt.type(rq.resolve, 'function', 'resole should be function');
         tt.type(rq.reject, 'function', 'reject should be function');
@@ -65,7 +65,7 @@ tap.test('Waiter', async(t) => {
             'should find waiter'
         );
         tt.type(
-            waiters1.find({meta: {idx: rq.idx, nodeId: nodeId0}}),
+            waiters1.find({meta: {idx: rq.idx, tag: tag0}}),
             'object',
             'should find waiter'
         );
@@ -75,7 +75,7 @@ tap.test('Waiter', async(t) => {
             'should not find waiter'
         );
         tt.type(
-            waiters1.find({meta: {idx: rq.idx, nodeId: 'nomatch'}}),
+            waiters1.find({meta: {idx: rq.idx, tag: 'nomatch'}}),
             'undefined',
             'should not find waiter'
         );
@@ -98,7 +98,7 @@ tap.test('Waiter', async(t) => {
                 tt.same(error, WaitTimeExpired.create(''), 'should be expire time error');
                 tt.end();
             },
-            match: {idx: ++idx, nodeId: nodeId1},
+            match: {idx: ++idx, tag: tag1},
             packet: {
                 meta: {
                     config: {
@@ -112,7 +112,7 @@ tap.test('Waiter', async(t) => {
     t.test('Waiter 3 resolve with error', (tt) => {
         const rq = waiters1.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, nodeId: nodeId1}
+            match: {idx: ++idx, tag: tag1}
         });
         const errorMsg = {error: new Error()};
         const fn2 = waiters1.fulfill(rq);
@@ -124,7 +124,7 @@ tap.test('Waiter', async(t) => {
     t.test('Waiter 4', (tt) => {
         const rq = waiters1.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, nodeId: nodeId1}
+            match: {idx: ++idx, tag: tag1}
         });
         const fn = waiters1.fulfill(rq);
         tt.equal(fn({}), undefined, 'should return void');
@@ -134,7 +134,7 @@ tap.test('Waiter', async(t) => {
     t.test('Waiter 5', (tt) => {
         const rq = waiters1.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, nodeId: nodeId1}
+            match: {idx: ++idx, tag: tag1}
         });
         const fn = waiters1.fulfill(rq);
         tt.equal(fn(), undefined, 'should return void');
@@ -142,7 +142,7 @@ tap.test('Waiter', async(t) => {
     });
 
     t.test('Waiter 6', (tt) => {
-        const waiters2 = require('../../../lib/waiters')({nodeId: nodeId0});
+        const waiters2 = require('../../../lib/waiters')({tag: tag0});
         const rq = waiters2.add({
             onLocalReject: (e) => e,
             match: {idx: ++idx}
