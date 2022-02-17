@@ -34,7 +34,7 @@ tap.test('Single', (l0) => {
                 },
                 direction: 'out'
             });
-            setTimeout(bridge.waiters.fulfill(request), 100);
+            setTimeout(bridge.requests.fulfill(request), 100);
             t.resolves(request.promise, 'should resolve');
             t.end();
         });
