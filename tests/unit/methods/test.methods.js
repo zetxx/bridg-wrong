@@ -1,12 +1,24 @@
 const tap = require('tap');
-const methods = require('../../../lib/methods')();
+const methods = require('../../../lib/methods')({tag: Symbol()});
 const {NotFound} = require('../../../lib/methods/errors');
 
 tap.test('Method', (t) => {
     t.type(methods, 'object', 'method Is object');
-    t.type(methods.add, 'function', 'method.add is function');
-    t.type(methods.find, 'function', 'method.find is function');
-    t.type(methods.call, 'function', 'method.call is function');
+    t.type(
+        methods.add,
+        'function',
+        'method.add is function'
+    );
+    t.type(
+        methods.find,
+        'function',
+        'method.find is function'
+    );
+    t.type(
+        methods.call,
+        'function',
+        'method.call is function'
+    );
     methods.add({method: 'abc.in', fn: () => 1});
     
     t.throws(
@@ -23,7 +35,10 @@ tap.test('Method', (t) => {
             direction: 'in',
             packet: {meta: {method: 'abcd'}}
         }),
-        NotFound.create('method: {wantedMethod} not found', {wantedMethod: 'abcd'}),
+        NotFound.create(
+            'method: {wantedMethod} not found',
+            {wantedMethod: 'abcd'}
+        ),
         'should throw'
     );
 
@@ -32,7 +47,10 @@ tap.test('Method', (t) => {
             direction: 'in',
             packet: {meta: {method: 'abcd'}}
         }),
-        NotFound.create('method: {wantedMethod} not found', {wantedMethod: 'abcd'}),
+        NotFound.create(
+            'method: {wantedMethod} not found',
+            {wantedMethod: 'abcd'}
+        ),
         'should throw'
     );
     t.throws(
@@ -40,7 +58,10 @@ tap.test('Method', (t) => {
             direction: 'in',
             packet: {meta: {method: 'abcd'}}
         }),
-        NotFound.create('method: {wantedMethod} not found', {wantedMethod: 'abcd'}),
+        NotFound.create(
+            'method: {wantedMethod} not found',
+            {wantedMethod: 'abcd'}
+        ),
         'should throw'
     );
 

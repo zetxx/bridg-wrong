@@ -2,8 +2,8 @@ const tap = require('tap');
 const Router = require('../../../lib/router');
 
 tap.test('Multi', (l0) => {
-    const A = Router({config: {id: 'A', request: {waitTime: 200000000}}});
-    const B = Router({config: {id: 'B', request: {waitTime: 200000000}}});
+    const A = Router({config: {id: 'A', request: {waitTime: 3000}}});
+    const B = Router({config: {id: 'B', request: {waitTime: 3000}}});
 
     A.intersect({other: B});
     B.intersect({other: A});
@@ -35,24 +35,27 @@ tap.test('Multi', (l0) => {
     l0.test('R->A.a.in->B.a.out->wait :: B.a.in->match->A.a.out->R^', async(l1) => {
 
         // R->A.a.in->B.a.out->wait
-        await A.pass({
+        const a_ = await A.pass({
             packet: {
                 payload: 3,
                 meta: {method: 'a'}
             },
             direction: 'in'
         });
+        try {
+            await a_.promise;
+        } catch (e) {}
 
-        setTimeout(async() => {
-            // B.a.in->match->A.a.out->R^
-            await B.pass({
-                packet: {
-                    payload: 3,
-                    meta: {idx: 1}
-                },
-                direction: 'in'
-            });
-        }, 1000);
+        // setTimeout(async() => {
+        //     // B.a.in->match->A.a.out->R^
+        //     await B.pass({
+        //         packet: {
+        //             payload: 3,
+        //             meta: {idx: 1}
+        //         },
+        //         direction: 'in'
+        //     });
+        // }, 1000);
 
         l1.end();
     });
