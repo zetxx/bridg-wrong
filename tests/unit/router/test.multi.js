@@ -35,27 +35,30 @@ tap.test('Multi', (l0) => {
     l0.test('R->A.a.in->B.a.out->wait :: B.a.in->match->A.a.out->R^', async(l1) => {
 
         // R->A.a.in->B.a.out->wait
-        const a_ = await A.pass({
-            packet: {
-                payload: 3,
-                meta: {method: 'a'}
-            },
-            direction: 'in'
-        });
         try {
+            const a_ = await A.pass({
+                packet: {
+                    payload: 3,
+                    meta: {
+                        method: 'a',
+                        direction: 'in'
+                    }
+                }
+            });
+            setTimeout(async() => {
+                // B.a.in->match->A.a.out->R^
+                await B.pass({
+                    packet: {
+                        payload: 3,
+                        meta: {
+                            idx: 1,
+                            direction: 'in'
+                        }
+                    }
+                });
+            }, 1000);
             await a_.promise;
         } catch (e) {}
-
-        // setTimeout(async() => {
-        //     // B.a.in->match->A.a.out->R^
-        //     await B.pass({
-        //         packet: {
-        //             payload: 3,
-        //             meta: {idx: 1}
-        //         },
-        //         direction: 'in'
-        //     });
-        // }, 1000);
 
         l1.end();
     });

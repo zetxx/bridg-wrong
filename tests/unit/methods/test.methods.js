@@ -32,8 +32,11 @@ tap.test('Method', (t) => {
 
     t.throws(
         () => methods.find({
-            direction: 'in',
-            packet: {meta: {method: 'abcd'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abcd'
+                }}
         }),
         NotFound.create(
             'method: {wantedMethod} not found',
@@ -44,8 +47,12 @@ tap.test('Method', (t) => {
 
     t.rejects(
         methods.call({
-            direction: 'in',
-            packet: {meta: {method: 'abcd'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abcd'
+                }
+            }
         }),
         NotFound.create(
             'method: {wantedMethod} not found',
@@ -55,8 +62,12 @@ tap.test('Method', (t) => {
     );
     t.throws(
         () => methods.find({
-            direction: 'in',
-            packet: {meta: {method: 'abcd'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abcd'
+                }
+            }
         }),
         NotFound.create(
             'method: {wantedMethod} not found',
@@ -67,8 +78,12 @@ tap.test('Method', (t) => {
 
     t.type(
         methods.find({
-            direction: 'in',
-            packet: {meta: {method: 'abc'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abc'
+                }
+            }
         }),
         'function',
         'method.find should returns function'
@@ -76,16 +91,24 @@ tap.test('Method', (t) => {
 
     t.resolves(
         methods.call({
-            direction: 'in',
-            packet: {meta: {method: 'abc'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abc'
+                }
+            }
         }),
         'should resolves'
     );
 
     t.resolveMatch(
         methods.call({
-            direction: 'in',
-            packet: {meta: {method: 'abc'}}
+            packet: {
+                meta: {
+                    direction: 'in',
+                    method: 'abc'
+                }
+            }
         }),
         1,
         'should resolves to value'
