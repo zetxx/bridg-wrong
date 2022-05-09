@@ -1,6 +1,6 @@
 const tap = require('tap');
-const methods = require('../../../lib/methods')({tag: Symbol()});
-const {NotFound} = require('../../../lib/methods/errors');
+const methods = require('../../lib/methods')({tag: Symbol()});
+const {NotFound} = require('../../lib/methods/errors');
 
 tap.test('Method', (t) => {
     t.type(methods, 'object', 'method Is object');

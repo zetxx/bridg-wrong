@@ -3,7 +3,7 @@ const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
-} = require('../../../lib/requests/errors');
+} = require('../../lib/requests/errors');
 
 const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
@@ -12,47 +12,44 @@ const tag1 = Symbol('tag.1');
 
 
 tap.test('Request', async(t) => {
-    const requests1 = require('../../../lib/requests')({
+    const reqPool = require('../../lib/requests')({
         config: {
             waitTime: defaultWaitTime
         },
         tag: tag0
     });
     // coverage
-    require('../../../lib/requests')();
+    require('../../lib/requests')();
 
-    t.type(requests1, 'object', 'request Is object');
+    t.type(reqPool, 'object', 'request Is object');
     t.type(
-        requests1.len,
+        reqPool.len,
         'function',
         'request.len is function'
     );
-    t.equal(requests1.len(), 0, '0 requests');
+    t.equal(reqPool.len(), 0, '0 requests');
     t.type(
-        requests1.add,
+        reqPool.add,
         'function',
         'request.add is function'
     );
     t.type(
-        requests1.find,
+        reqPool.find,
         'function',
         'request.find is function'
     );
     t.type(
-        requests1.fulfill,
-        'function',
-        'request.call is function'
-    );
-    t.type(
-        requests1.fulfill,
+        reqPool.fulfill,
         'function',
         'request.call is function'
     );
 
     t.test('Request 1', async(tt) => {
-        const rq = requests1.add({
+        const rq = reqPool.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, tag: tag1}
+            packet: {
+                match: {idx: ++idx, tag: tag1}
+            }
         });
         tt.same(
             rq.idx > 0,
@@ -86,51 +83,57 @@ tap.test('Request', async(t) => {
             'object',
             'timeout should be function'
         );
+
+        tt.same(
+            Object.keys(rq.match),
+            ['idx', 'tag'],
+            'match object should have keys: idx, tag'
+        );
     
-        requests1.find({meta: {idx: rq.idx}});
+        reqPool.find({meta: {idx: rq.idx}});
         tt.type(
-            requests1.find(),
+            reqPool.find(),
             'undefined',
             'should not find request'
         );
         tt.type(
-            requests1.find({}),
+            reqPool.find({}),
             'undefined',
             'should not find request'
         );
         tt.type(
-            requests1.find({meta: {}}),
+            reqPool.find({meta: {}}),
             'undefined',
             'should not find request'
         );
         tt.type(
-            requests1.find({meta: {idx: rq.idx}}),
+            reqPool.find({meta: {idx: rq.idx}}),
             'object',
             'should find request'
         );
         tt.type(
-            requests1.find({meta: {idx: rq.idx, tag: tag0}}),
+            reqPool.find({meta: {idx: rq.idx, tag: tag0}}),
             'object',
             'should find request'
         );
         tt.type(
-            requests1.find({meta: {idx: -1}}),
+            reqPool.find({meta: {idx: -1}}),
             'undefined',
             'should not find request'
         );
         tt.type(
-            requests1.find({
+            reqPool.find({
                 meta: {idx: rq.idx, tag: 'nomatch'}
             }),
             'undefined',
             'should not find request'
         );
         tt.throws(
-            () => requests1.fulfill({}),
+            () => reqPool.fulfill({}),
             NotFound.create('NotFound', {tag: tag0}),
             'should trow NotFound'
         );
-        const fn1 = requests1.fulfill(rq);
+        const fn1 = reqPool.fulfill(rq);
         tt.type(
             fn1,
             'function',
@@ -142,7 +145,7 @@ tap.test('Request', async(t) => {
     });
     
     t.test('Request 2 Timeout', (tt) => {
-        const rq = requests1.add({
+        const rq = reqPool.add({
             onLocalReject: ({error}) => {
                 tt.same(
                     rq.config,
@@ -159,51 +162,51 @@ tap.test('Request', async(t) => {
                 );
                 tt.end();
             },
-            match: {idx: ++idx, tag: tag1},
             packet: {
                 meta: {
                     config: {
                         waitTime: 550
                     }
-                }
+                },
+                match: {idx: ++idx, tag: tag1},
             }
         });
     });
  
     t.test('Request 3 resolve with error', (tt) => {
-        const rq = requests1.add({
+        const rq = reqPool.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, tag: tag1}
+            packet: {match: {idx: ++idx, tag: tag1}}
         });
         const errorMsg = {error: new Error()};
-        const fn2 = requests1.fulfill(rq);
+        const fn2 = reqPool.fulfill(rq);
         tt.rejects(rq.promise, errorMsg);
         fn2(errorMsg);
         tt.end();
     });
 
     t.test('Request 4', (tt) => {
-        const rq = requests1.add({
+        const rq = reqPool.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, tag: tag1}
+            packet: {match: {idx: ++idx, tag: tag1}}
         });
-        const fn = requests1.fulfill(rq);
+        const fn = reqPool.fulfill(rq);
         tt.equal(fn({}), undefined, 'should return void');
         tt.end();
     });
 
     t.test('Request 5', (tt) => {
-        const rq = requests1.add({
+        const rq = reqPool.add({
             onLocalReject: (e) => e,
-            match: {idx: ++idx, tag: tag1}
+            packet: {match: {idx: ++idx, tag: tag1}}
         });
-        const fn = requests1.fulfill(rq);
+        const fn = reqPool.fulfill(rq);
         tt.equal(fn(), undefined, 'should return void');
         tt.end();
     });
 
     t.test('Request 6', (tt) => {
-        const requests2 = require('../../../lib/requests')(
+        const requests2 = require('../../lib/requests')(
             {tag: tag0}
         );
         const rq = requests2.add({

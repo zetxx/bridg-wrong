@@ -1,10 +1,28 @@
 const tap = require('tap');
-const Vector = require('../../../lib/vector');
+const Vector = require('../../lib/vector');
+
+const vectorFactory = ({
+    log = (level, msg) => console[level](msg),
+    config: {
+        request: {
+            waitTime = 5000
+        } = {},
+        id
+    } = {}
+} = {}) => Vector({
+    log,
+    config: {
+        request: {
+            waitTime
+        },
+        id
+    }
+});
 
 tap.test('Vector', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
-        const router = Vector();
-        router.destroy();
+        const v1 = vectorFactory({config: {id: Symbol('V')}});
+        v1.destroy();
         t.end();
     });
 
