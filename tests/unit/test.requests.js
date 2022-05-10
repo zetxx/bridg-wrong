@@ -90,7 +90,7 @@ tap.test('Request', async(t) => {
             'match object should have keys: idx, tag'
         );
     
-        reqPool.find({meta: {idx: rq.idx}});
+        reqPool.find({idx: rq.idx});
         tt.type(
             reqPool.find(),
             'undefined',
@@ -102,29 +102,22 @@ tap.test('Request', async(t) => {
             'should not find request'
         );
         tt.type(
-            reqPool.find({meta: {}}),
-            'undefined',
-            'should not find request'
-        );
-        tt.type(
-            reqPool.find({meta: {idx: rq.idx}}),
+            reqPool.find({idx: rq.idx}),
             'object',
             'should find request'
         );
         tt.type(
-            reqPool.find({meta: {idx: rq.idx, tag: tag0}}),
+            reqPool.find({idx: rq.idx, tag: tag0}),
             'object',
             'should find request'
         );
         tt.type(
-            reqPool.find({meta: {idx: -1}}),
+            reqPool.find({idx: -1}),
             'undefined',
             'should not find request'
         );
         tt.type(
-            reqPool.find({
-                meta: {idx: rq.idx, tag: 'nomatch'}
-            }),
+            reqPool.find({idx: rq.idx, tag: 'nomatch'}),
             'undefined',
             'should not find request'
         );

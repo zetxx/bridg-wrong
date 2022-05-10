@@ -21,7 +21,28 @@ const vectorFactory = ({
 
 tap.test('Vector', (l0) => {
     l0.test('Simple checks and coverage', (t) => {
-        const v1 = vectorFactory({config: {id: Symbol('V')}});
+        const v1 = vectorFactory({config: {id: 'V'}});
+        v1.destroy();
+        t.end();
+    });
+
+    l0.test('New Request', (t) => {
+        const v1 = vectorFactory({config: {id: 'V'}});
+        v1.destroy();
+        t.end();
+    });
+
+    l0.test('Existing Request', (t) => {
+        const v1 = vectorFactory({config: {id: 'V'}});
+        v1.pass({
+            packet: {
+                payload: ['init'],
+                meta: {
+                    direction: 'in',
+                    method: 'a'
+                }
+            }
+        });
         v1.destroy();
         t.end();
     });
