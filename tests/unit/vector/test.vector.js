@@ -1,5 +1,15 @@
 const tap = require('tap');
-const Vector = require('../../lib/vector');
+const Vector = require('../../../lib/vector');
+
+const timeOut = (cb, time) => new Promise(
+    (resolve, reject) =>
+        setTimeout(
+            async () => {
+                resolve(await cb());
+            },
+            time
+        )
+);
 
 const vectorFactory = ({
     log = (level, msg) => console[level](msg),
@@ -97,6 +107,7 @@ tap.test('Vector', (l0) => {
         //         const r2 = await passFactory(
         //             v1,
         //             ['Existing Methods a.in and a.out, dir out > in'],
+        //             false,
         //             'a.out'
         //         );
         //         setTimeout(async() => {
@@ -127,26 +138,57 @@ tap.test('Vector', (l0) => {
         //         l2.end();
         //     }
         // });
-        l1.test('In Method don\'t exists', async(l2) => {
+        // l1.test('In Method don\'t exists', async(l2) => {
+        //     try {
+        //         const r1 = await passFactory(
+        //             v1,
+        //             ['UnExisting Method aa.in existing a.out'],
+        //             false,
+        //             'aa.in'
+        //         );
+        //         const p = timeOut(async() => {
+        //             const r2 = await passFactory(
+        //                 v1,
+        //                 r1.payload,
+        //                 r1.error,
+        //                 'a.out',
+        //                 {idx: r1.request.idx, tag: r1.request.tag}
+        //             );
+        //             const {packet: p2} = await r2.request.promise;
+        //             const {packet} = await r1.request.promise;
+        //             l2.equal(p2, packet, 'in and out should hold same requests');
+        //         }, 1000);
+        //         const {packet} = await r1.request.promise;
+        //         await p;
+        //     } catch (e) {
+        //         console.error(e);
+        //     } finally {
+        //         v1.destroy();
+        //         l2.end();
+        //     }
+        // });
+        l1.test('Out Method don\'t exists', async(l2) => {
             try {
                 const r1 = await passFactory(
                     v1,
-                    ['Existing Methods a.in and a.out'],
+                    ['UnExisting Method aa.in existing a.out'],
                     false,
-                    'aa.in'
+                    'a.in'
                 );
-                setTimeout(async() => {
-                    await passFactory(
+                const p = timeOut(async() => {
+                    const r2 = await passFactory(
                         v1,
                         r1.payload,
                         r1.error,
-                        'a.out',
+                        'aa.out',
                         {idx: r1.request.idx, tag: r1.request.tag}
                     );
+                    const {packet: p2} = await r2.request.promise;
+                    const {packet} = await r1.request.promise;
+                    l2.equal(p2, packet, 'in and out should hold same requests');
                 }, 1000);
-                console.log(1)
                 const {packet} = await r1.request.promise;
-                console.log(packet)
+                await p;
             } catch (e) {
                 console.error(e);
             } finally {

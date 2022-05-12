@@ -24,8 +24,8 @@ tap.test('Method', (t) => {
     t.throws(
         () => methods.find(),
         NotFound.create(
-            'method: {wantedMethod} not found',
-            {wantedMethod: undefined}
+            'method: {method} not found',
+            {method: 'undefined.undefined'}
         ),
         'should throw'
     );
@@ -39,8 +39,8 @@ tap.test('Method', (t) => {
                 }}
         }),
         NotFound.create(
-            'method: {wantedMethod} not found',
-            {wantedMethod: 'abcd'}
+            'method: {method} not found',
+            {method: 'abcd.in'}
         ),
         'should throw'
     );
@@ -55,8 +55,8 @@ tap.test('Method', (t) => {
             }
         }),
         NotFound.create(
-            'method: {wantedMethod} not found',
-            {wantedMethod: 'abcd'}
+            'method: {method} not found',
+            {method: 'abcd.in'}
         ),
         'should throw'
     );
@@ -70,8 +70,8 @@ tap.test('Method', (t) => {
             }
         }),
         NotFound.create(
-            'method: {wantedMethod} not found',
-            {wantedMethod: 'abcd'}
+            'method: {method} not found',
+            {method: 'abcd.in'}
         ),
         'should throw'
     );
