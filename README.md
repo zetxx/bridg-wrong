@@ -1,38 +1,69 @@
-## Build
+Small microservice rpc "as a crossroad" architecture, imagine
+a request is comming from internal side (over api), and should
+be send to outside world, after that response is received and
+sends back to internal requester.
+
 [![Build Status](https://travis-ci.com/zetxx/bridg-wrong.svg?branch=master)](https://travis-ci.com/zetxx/bridg-wrong)
 
+## Filesystem structure
 
-## Calls and Overwrites
-- Internal Waiters (requests)
-    - call `apiRequestReceived` when some request is received
-    - will be called: `apiResponseReceived` when someone responded to api request
+- methods(`lib/methods`): holds registered methods
+- requests(`lib/requests`): holds all request that are send somewhere.
+- vector: this is half of the crossroad
+- router: routes between two vectors, this implements 2 vectors intersection
 
-### API
-- `meta` can have following props `{method, isNotification, timeout, apiRequestId, resolve, reject, deadIn}`
-    * `method` - used to for tell what method to be executed
-    * `isNotification` - if truty api request will be marked as notification, response will be returned imidietely
-    * `timeout` - after how many ms. request will expire
-    * `apiRequestId` - used for response matching against api request
-    * `resolve` & `reject` - internal usage ony, it resolves api request
-    * `deadIn` - internal usage only, used to trase if message is timeouted, or there is no such `apiRequestId` available for matching
-#### `apiRequestReceived({message, meta})`
-#### `apiResponseReceived({result, error, meta})`
-#### `registerApiMethod({method, fn, meta})`
-example:
-```js
-var service = new Service({name: '...'});
-service.registerExternalMethod({
-    method: 'networkCommand',
-    fn: function(message) {
-        return message;
+### Vector
+
+#### Examle
+
+```javascript
+const Vector = require('=./lib/vector');
+const vector = Vector({
+    // passing log
+    log = (level, msg) => console[level](msg),
+    // config
+    config: {
+        // requests config
+        request: {
+            // how much time request to wait before times out
+            waitTime = 1000000
+        } = {},
+        // unique id of the vector
+        id
+    } = {}
+});
+
+vector.methods.add({
+    // register method a for incoming request
+    // it is called right after request is received
+    method: 'a',
+    // method that will be executed
+    // when vector.pass({payload: ..., meta: {method: 'a.in'}}) is called
+    fn: ({payload, error}) => {
+        // do something useful
+        return ...;
     }
 });
-service.start()
-    .then((e) => service.log('info', {description: 'service ready', args: {fingerprint: service.getFingerprint()}}))
-    .catch((e) => service.log('error', e));
-```
-#### `registerExternalMethod({method, fn, meta})`
 
-### Overwrites
-#### `externalIn({result, error, meta})` - should be called right after external packages went in
-#### `externalOut({result, error, meta})` - should be re-implemented, and called right before external package goes out
+// special method that will be called
+// at the end, when everything else is called/done
+vector.methods.add({
+    // register method a for incoming request
+    method: '*',
+    // method that will be executed
+    // when vector.pass({payload: ..., meta: {method: 'a.in'}}) is called
+    fn: ({payload, error}) => {
+        // do something useful
+        return ...;
+    }
+});
+
+......
+
+// actual method execution
+const someResult = await vector.pass({
+    payload: ...,
+    meta: {method: 'a'}
+});
+
+```
