@@ -1,5 +1,7 @@
+# Bridg-wrong
+
 Small microservice rpc "as a crossroad" architecture, imagine
-a request is comming from internal side (over api), and should
+a request is coming from internal side (over api), and should
 be send to outside world, after that response is received and
 sends back to internal requester.
 
