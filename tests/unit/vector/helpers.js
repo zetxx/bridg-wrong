@@ -28,15 +28,19 @@ const vectorFactory = ({
     }
 });
 
-const methodRegisterFactory = (vector, name) => {
+const methodRegisterFactory = (
+    vector,
+    name,
+    fn
+) => {
     vector.methods.add({
         method: name,
-        fn: ({payload, error}) => {
+        fn: fn || (({payload, error}) => {
             if (error) {
                 throw error;
             }
             return payload.concat([`X:${name}`]);
-        }
+        })
     });
 };
 
@@ -44,17 +48,16 @@ const passFactory = (
     vector,
     payload,
     error,
-    m,
+    [method, direction],
     match = {}
 ) => {
-    const [method, direction] = m.split('.');
     return vector.pass({
         packet: {
-            ...(payload && {payload: payload.concat([`>${m}`])}),
+            ...(payload && {payload: payload.concat([`>${method}.${direction}`])}),
             ...(error && {error}),
             meta: {
-                direction,
-                method
+                method,
+                direction
             },
             match
         }

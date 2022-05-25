@@ -16,14 +16,14 @@ tap.test('Vector: Out Method don\'t exists', async(l0) => {
             v1,
             ['UnExisting Method aa.in existing a.out'],
             false,
-            'a.in'
+            ['a', 'in']
         );
         const p = timeOut(async() => {
             const r2 = await passFactory(
                 v1,
                 r1.payload,
                 r1.error,
-                'aa.out',
+                ['aa', 'out'],
                 {idx: r1.request.idx, tag: r1.request.tag}
             );
             const {packet: p2} = await r2.request.promise;

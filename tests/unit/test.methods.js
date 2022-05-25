@@ -19,96 +19,76 @@ tap.test('Method', (t) => {
         'function',
         'method.call is function'
     );
-    methods.add({method: 'abc.in', fn: () => 1});
+    methods.add({method: 'abc', fn: () => 1});
     
-    t.throws(
-        () => methods.find(),
-        NotFound.create(
-            'method: {method} not found',
-            {method: 'undefined.undefined'}
-        ),
-        'should throw'
-    );
+    // t.throws(
+    //     () => methods.find(),
+    //     NotFound.create(
+    //         'method: {method} not found',
+    //         {method: undefined}
+    //     ),
+    //     'should throw'
+    // );
 
     t.throws(
-        () => methods.find({
-            packet: {
-                meta: {
-                    direction: 'in',
-                    method: 'abcd'
-                }}
-        }),
+        () => methods.find('abcd'),
         NotFound.create(
             'method: {method} not found',
-            {method: 'abcd.in'}
+            {method: 'abcd'}
         ),
         'should throw'
     );
 
     t.rejects(
         methods.call({
-            packet: {
+            ctx: {
                 meta: {
-                    direction: 'in',
                     method: 'abcd'
                 }
-            }
+            },
+            method: 'abcd'
         }),
         NotFound.create(
             'method: {method} not found',
-            {method: 'abcd.in'}
+            {method: 'abcd'}
         ),
         'should throw'
     );
     t.throws(
-        () => methods.find({
-            packet: {
-                meta: {
-                    direction: 'in',
-                    method: 'abcd'
-                }
-            }
-        }),
+        () => methods.find('abcd'),
         NotFound.create(
             'method: {method} not found',
-            {method: 'abcd.in'}
+            {method: 'abcd'}
         ),
         'should throw'
     );
 
     t.type(
-        methods.find({
-            packet: {
-                meta: {
-                    direction: 'in',
-                    method: 'abc'
-                }
-            }
-        }),
+        methods.find('abc'),
         'function',
         'method.find should returns function'
     );
 
     t.resolves(
         methods.call({
-            packet: {
+            ctx: {
                 meta: {
-                    direction: 'in',
                     method: 'abc'
                 }
-            }
+            },
+            method: 'abc'
         }),
         'should resolves'
     );
 
     t.resolveMatch(
         methods.call({
-            packet: {
+            ctx: {
                 meta: {
-                    direction: 'in',
                     method: 'abc'
                 }
-            }
+            },
+            method: 'abc'
         }),
         1,
         'should resolves to value'
