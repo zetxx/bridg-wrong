@@ -6,4 +6,4 @@
 // require('./vector/test.in-ok-out-na');
 // require('./vector/test.in-na-out-na');
 // require('./vector/test.special.method');
-require('./router/test.multi');
+require('./router/test.router');
