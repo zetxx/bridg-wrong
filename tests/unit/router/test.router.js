@@ -1,7 +1,7 @@
 const tap = require('tap');
 const Router = require('../../../lib/router');
 const {
-    passFactory,
+    routerPassFactory,
     timeOut,
     vectorFactory,
     methodRegisterFactory
@@ -29,7 +29,7 @@ tap.test('Router', (l0) => {
 
     router.pass({
         vector: 0,
-
+        packet: 
     })
 
     l0.end();

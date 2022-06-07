@@ -1,6 +1,6 @@
 const tap = require('tap');
 const {
-    passFactory,
+    vectorPassFactory,
     timeOut,
     vectorFactory,
     methodRegisterFactory
@@ -12,14 +12,14 @@ methodRegisterFactory(v1, 'a.out');
 
 tap.test('Vector: Out Method don\'t exists', async(l0) => {
     try {
-        const r1 = await passFactory(
+        const r1 = await vectorPassFactory(
             v1,
             ['UnExisting Method aa.in existing a.out'],
             false,
             ['a', 'in']
         );
         const p = timeOut(async() => {
-            const r2 = await passFactory(
+            const r2 = await vectorPassFactory(
                 v1,
                 r1.payload,
                 r1.error,

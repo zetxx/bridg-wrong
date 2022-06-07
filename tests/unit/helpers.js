@@ -44,7 +44,7 @@ const methodRegisterFactory = (
     });
 };
 
-const passFactory = (
+const vectorPassFactory = (
     vector,
     payload,
     error,
@@ -64,9 +64,30 @@ const passFactory = (
     });
 };
 
+const routerPassFactory = (
+    router,
+    payload,
+    error,
+    [method, direction],
+    match = {}
+) => {
+    return router.pass({
+        packet: {
+            ...(payload && {payload: payload.concat([`>${method}.${direction}`])}),
+            ...(error && {error}),
+            meta: {
+                method,
+                direction
+            },
+            match
+        }
+    });
+};
+
 module.exports = {
     methodRegisterFactory,
     timeOut,
     vectorFactory,
-    passFactory
+    vectorPassFactory,
+    routerPassFactory
 };

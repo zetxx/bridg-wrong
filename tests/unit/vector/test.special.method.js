@@ -1,6 +1,6 @@
 const tap = require('tap');
 const {
-    passFactory,
+    vectorPassFactory,
     timeOut,
     vectorFactory,
     methodRegisterFactory
@@ -28,14 +28,14 @@ methodRegisterFactory(w1, 'a.out');
 
 tap.test('Vector: Special method (*) success cases', async(l0) => {
     try {
-        const r1 = await passFactory(
+        const r1 = await vectorPassFactory(
             v1,
             ['Existing Methods a.in and a.out, dir in > out, special(*) method should be called'],
              false,
             ['a', 'in']
         );
         setTimeout(async() => {
-            await passFactory(
+            await vectorPassFactory(
                 v1,
                 r1.payload,
                 false,
@@ -57,14 +57,14 @@ tap.test('Vector: Special method (*) success cases', async(l0) => {
             match: {idx: 1, tag: Symbol('V')}
         }, 'packet struct should match, direction in > out');
         //////////////////////////////////
-        const r2 = await passFactory(
+        const r2 = await vectorPassFactory(
             w1,
             ['Existing Methods a.in and a.out, dir in > out, special(*) method called should be skipped'],
              false,
             ['a', 'in']
         );
         setTimeout(async() => {
-            await passFactory(
+            await vectorPassFactory(
                 w1,
                 r2.payload,
                 false,

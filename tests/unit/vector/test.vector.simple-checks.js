@@ -1,6 +1,5 @@
 const tap = require('tap');
 const {
-    passFactory,
     timeOut,
     vectorFactory,
     methodRegisterFactory

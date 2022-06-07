@@ -1,6 +1,6 @@
 const tap = require('tap');
 const {
-    passFactory,
+    vectorPassFactory,
     timeOut,
     vectorFactory,
     methodRegisterFactory
@@ -12,14 +12,14 @@ methodRegisterFactory(v1, 'a.out');
 
 tap.test('Vector: Existing Methods a.in and a.out', async(l0) => {
     try {
-        const r1 = await passFactory(
+        const r1 = await vectorPassFactory(
             v1,
             ['Existing Methods a.in and a.out, dir in > out'],
              false,
             ['a','in']
         );
         setTimeout(async() => {
-            await passFactory(
+            await vectorPassFactory(
                 v1,
                 r1.payload,
                 false,
@@ -40,14 +40,14 @@ tap.test('Vector: Existing Methods a.in and a.out', async(l0) => {
             match: {idx: 1, tag: Symbol('V')}
         }, 'packet struct should match, direction in > out');
 
-        const r2 = await passFactory(
+        const r2 = await vectorPassFactory(
             v1,
             ['Existing Methods a.in and a.out, dir out > in'],
             false,
             ['a', 'out']
         );
         setTimeout(async() => {
-            await passFactory(
+            await vectorPassFactory(
                 v1,
                 r2.payload,
                 false,
