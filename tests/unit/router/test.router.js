@@ -1,5 +1,6 @@
 const tap = require('tap');
 const Router = require('../../../lib/router');
+const {RouterErrorRouteNotFound} = require('../../../lib/router/errors');
 const {
     routerPassFactory,
     timeOut,
@@ -9,7 +10,7 @@ const {
 
 const log = (level, msg) => console[level](msg)
 
-tap.test('Router', (l0) => {
+tap.test('Router', async(l0) => {
     const v1 = vectorFactory({
         log,
         config: {
@@ -34,10 +35,10 @@ tap.test('Router', (l0) => {
         vectors: [v1, v2]
     });
 
-    router.pass({
-        vector: 0,
-        packet: {}
-    })
-
+    try {
+        await router.pass({vector: 5});
+    } catch (e) {
+        l0.match(e, RouterErrorRouteNotFound({vector: 5}), 'route not found');
+    }
     l0.end();
 });
