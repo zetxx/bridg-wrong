@@ -46,7 +46,7 @@ tap.test('Request', async(t) => {
 
     t.test('Request 1', async(tt) => {
         const rq = reqPool.add({
-            onLocalReject: (e) => e,
+            timeout: (e) => e,
             packet: {
                 match: {idx: ++idx, tag: tag1}
             }
@@ -139,7 +139,7 @@ tap.test('Request', async(t) => {
     
     t.test('Request 2 Timeout', (tt) => {
         const rq = reqPool.add({
-            onLocalReject: ({error}) => {
+            timeout: ({error}) => {
                 tt.same(
                     rq.config,
                     {waitTime: 550},
@@ -168,7 +168,7 @@ tap.test('Request', async(t) => {
  
     t.test('Request 3 resolve with error', (tt) => {
         const rq = reqPool.add({
-            onLocalReject: (e) => e,
+            timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const errorMsg = {error: new Error()};
@@ -180,7 +180,7 @@ tap.test('Request', async(t) => {
 
     t.test('Request 4', (tt) => {
         const rq = reqPool.add({
-            onLocalReject: (e) => e,
+            timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const fn = reqPool.fulfill(rq);
@@ -190,7 +190,7 @@ tap.test('Request', async(t) => {
 
     t.test('Request 5', (tt) => {
         const rq = reqPool.add({
-            onLocalReject: (e) => e,
+            timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const fn = reqPool.fulfill(rq);
@@ -203,7 +203,7 @@ tap.test('Request', async(t) => {
             {tag: tag0}
         );
         const rq = requests2.add({
-            onLocalReject: (e) => e,
+            timeout: (e) => e,
             match: {idx: ++idx}
         });
         tt.rejects(

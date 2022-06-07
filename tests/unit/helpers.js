@@ -1,4 +1,4 @@
-const Vector = require('../../../lib/vector');
+const Vector = require('../../lib/vector');
 
 const timeOut = (cb, time) => new Promise(
     (resolve, reject) =>

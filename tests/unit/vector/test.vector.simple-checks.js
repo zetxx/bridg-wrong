@@ -4,7 +4,7 @@ const {
     timeOut,
     vectorFactory,
     methodRegisterFactory
-} = require('./helpers');
+} = require('../helpers');
 
 tap.test('Vector: Simple checks and coverage', (l0) => {
     const v1 = vectorFactory({config: {id: 'V'}});

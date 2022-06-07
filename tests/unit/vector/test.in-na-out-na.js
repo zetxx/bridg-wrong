@@ -1,10 +1,8 @@
 const tap = require('tap');
 const {
-    passFactory,
-    timeOut,
     vectorFactory,
     methodRegisterFactory
-} = require('./helpers');
+} = require('../helpers');
 
 const v1 = vectorFactory({config: {id: 'V'}});
 methodRegisterFactory(v1, 'a.in');

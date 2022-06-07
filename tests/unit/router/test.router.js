@@ -1,19 +1,24 @@
 const tap = require('tap');
-const Vector = require('../../../lib/vector');
 const Router = require('../../../lib/router');
+const {
+    passFactory,
+    timeOut,
+    vectorFactory,
+    methodRegisterFactory
+} = require('../helpers');
 
-const log = (level, message) => {};
+const log = (level, msg) => console[level](msg)
 
 tap.test('Router', (l0) => {
     const router = Router({
         log,
-        vectors: [Vector({
+        vectors: [vectorFactory({
             log,
             config: {
                 request: {waitTime: 5000},
                 id: 'v1'
             }
-        }), Vector({
+        }), vectorFactory({
             log,
             config: {
                 request: {waitTime: 10000},
@@ -21,6 +26,11 @@ tap.test('Router', (l0) => {
             }
         })]
     });
+
+    router.pass({
+        vector: 0,
+
+    })
 
     l0.end();
 });
