@@ -48,13 +48,19 @@ tap.test('Request', async(t) => {
         const rq = reqPool.add({
             timeout: (e) => e,
             packet: {
-                match: {idx: ++idx, tag: tag1}
+                match: {idx: ++idx, tag: tag1},
+                meta: {traceId: -1}
             }
         });
         tt.same(
             rq.idx > 0,
             true,
             'index should be greater than 0'
+        );
+        tt.same(
+            rq.traceId,
+            -1,
+            'trace id should be same as passed'
         );
         tt.same(
             rq.config,
