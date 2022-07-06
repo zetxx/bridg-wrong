@@ -1,6 +1,8 @@
 const tap = require('tap');
 const Router = require('../../../lib/router');
-const {RouterErrorRouteNotFound} = require('../../../lib/router/errors');
+const {
+    RouterErrorRouteNotFound
+} = require('../../../lib/router/errors');
 const {
     routerPassFactory,
     timeOut,
