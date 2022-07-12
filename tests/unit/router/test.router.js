@@ -38,9 +38,9 @@ tap.test('Router', async(l0) => {
     });
 
     try {
-        await router.pass({vector: 5});
+        await router.pass({vector: NaN});
     } catch (e) {
-        l0.match(e, RouterErrorVectorNotFound({vector: 5}), 'vector not found');
+        l0.match(e, RouterErrorVectorNotFound({vector: NaN}), 'vector not found');
     }
     l0.end();
 });
