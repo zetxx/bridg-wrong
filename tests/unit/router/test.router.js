@@ -1,7 +1,7 @@
 const tap = require('tap');
 const Router = require('../../../lib/router');
 const {
-    RouterErrorRouteNotFound
+    RouterErrorVectorNotFound
 } = require('../../../lib/router/errors');
 const {
     routerPassFactory,
@@ -40,7 +40,7 @@ tap.test('Router', async(l0) => {
     try {
         await router.pass({vector: 5});
     } catch (e) {
-        l0.match(e, RouterErrorRouteNotFound({vector: 5}), 'route not found');
+        l0.match(e, RouterErrorVectorNotFound({vector: 5}), 'vector not found');
     }
     l0.end();
 });
