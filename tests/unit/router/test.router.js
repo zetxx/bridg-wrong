@@ -27,15 +27,16 @@ tap.test('Router', async(l0) => {
             id: 'v2'
         }
     });
-    methodRegisterFactory(v1, 'a.in');
-    methodRegisterFactory(v1, 'a.out');
-    methodRegisterFactory(v2, 'a.in');
-    methodRegisterFactory(v2, 'a.out');
 
     const router = Router({
         log,
         vectors: [v1, v2]
     });
+
+    methodRegisterFactory(v1, 'a.in');
+    methodRegisterFactory(v1, 'a.out');
+    methodRegisterFactory(v2, 'a.in');
+    methodRegisterFactory(v2, 'a.out');
 
     try {
         await router.pass({vector: NaN});
