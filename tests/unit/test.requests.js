@@ -49,7 +49,7 @@ tap.test('Request', async(t) => {
             // timeout: (e) => e,
             packet: {
                 match: {idx: ++idx, tag: tag1},
-                meta: {traceId: -1}
+                meta: {trace: -1}
             }
         });
         tt.same(
@@ -58,7 +58,7 @@ tap.test('Request', async(t) => {
             'index should be greater than 0'
         );
         tt.same(
-            rq.traceId,
+            rq.trace,
             -1,
             'trace id should be same as passed'
         );

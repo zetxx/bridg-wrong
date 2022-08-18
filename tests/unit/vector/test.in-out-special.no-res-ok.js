@@ -9,8 +9,10 @@ const {
 const v1 = vectorFactory({config: {id: 'V'}});
 methodRegisterFactory(v1, 'a.in');
 methodRegisterFactory(v1, 'a.out');
+methodRegisterFactory(v1, '*.in', () => undefined);
+methodRegisterFactory(v1, '*.out', () => undefined);
 
-tap.test('Vector: Existing Methods a.in and a.out', async(l0) => {
+tap.test('Vector: Existing Methods a.in and a.out, * methods also exists but returns no result', async(l0) => {
     try {
         const r1 = await vectorPassFactory(
             v1,
