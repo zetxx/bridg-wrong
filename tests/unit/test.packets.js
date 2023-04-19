@@ -45,7 +45,7 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
-            timeout: (e) => e,
+            // timeout: (e) => e,
             packet: {
                 match: {idx: ++idx, tag: tag1},
                 meta: {trace: -1}
@@ -138,87 +138,87 @@ tap.test('Packet', async(t) => {
             'should return function'
         );
         fn1({a: 2});
-        // tt.same(await rq.promise, {a: 2}, 'should be same');
+        tt.same(await rq.promise, {a: 2}, 'should be same');
         tt.end();
     });
 
-    // t.test('Packet 2 Timeout', (tt) => {
-    //     const rq = packetPool.add({
-    //         timeout: ({error}) => {
-    //             tt.same(
-    //                 rq.config,
-    //                 {waitTime: 550},
-    //                 'config should match'
-    //             );
-    //             tt.same(
-    //                 error,
-    //                 WaitTimeExpired.create(
-    //                     'WaitTimeExpired',
-    //                     {tag: tag0}
-    //                 ),
-    //                 'should be expire time error'
-    //             );
-    //             tt.end();
-    //         },
-    //         packet: {
-    //             meta: {
-    //                 config: {
-    //                     waitTime: 550
-    //                 }
-    //             },
-    //             match: {idx: ++idx, tag: tag1}
-    //         }
-    //     });
-    // });
+    t.test('Packet 2 Timeout', (tt) => {
+        const rq = packetPool.add({
+            timeout: ({error}) => {
+                tt.same(
+                    rq.config,
+                    {waitTime: 550},
+                    'config should match'
+                );
+                tt.same(
+                    error,
+                    WaitTimeExpired.create(
+                        'WaitTimeExpired',
+                        {tag: tag0}
+                    ),
+                    'should be expire time error'
+                );
+                tt.end();
+            },
+            packet: {
+                meta: {
+                    config: {
+                        waitTime: 550
+                    }
+                },
+                match: {idx: ++idx, tag: tag1}
+            }
+        });
+    });
 
-    // t.test('Packet 3 resolve with error', (tt) => {
-    //     const rq = packetPool.add({
-    //         // timeout: (e) => e,
-    //         packet: {match: {idx: ++idx, tag: tag1}}
-    //     });
-    //     const errorMsg = {error: new Error()};
-    //     const fn2 = packetPool.fulfill(rq);
-    //     tt.rejects(rq.promise, errorMsg);
-    //     fn2(errorMsg);
-    //     tt.end();
-    // });
+    t.test('Packet 3 resolve with error', (tt) => {
+        const rq = packetPool.add({
+            // timeout: (e) => e,
+            packet: {match: {idx: ++idx, tag: tag1}}
+        });
+        const errorMsg = {error: new Error()};
+        const fn2 = packetPool.fulfill(rq);
+        tt.rejects(rq.promise, errorMsg);
+        fn2(errorMsg);
+        tt.end();
+    });
 
-    // t.test('Packet 4', (tt) => {
-    //     const rq = packetPool.add({
-    //         // timeout: (e) => e,
-    //         packet: {match: {idx: ++idx, tag: tag1}}
-    //     });
-    //     const fn = packetPool.fulfill(rq);
-    //     tt.equal(fn({}), undefined, 'should return void');
-    //     tt.end();
-    // });
+    t.test('Packet 4', (tt) => {
+        const rq = packetPool.add({
+            // timeout: (e) => e,
+            packet: {match: {idx: ++idx, tag: tag1}}
+        });
+        const fn = packetPool.fulfill(rq);
+        tt.equal(fn({}), undefined, 'should return void');
+        tt.end();
+    });
 
-    // t.test('Packet 5', (tt) => {
-    //     const rq = packetPool.add({
-    //         // timeout: (e) => e,
-    //         packet: {match: {idx: ++idx, tag: tag1}}
-    //     });
-    //     const fn = packetPool.fulfill(rq);
-    //     tt.equal(fn(), undefined, 'should return void');
-    //     tt.end();
-    // });
+    t.test('Packet 5', (tt) => {
+        const rq = packetPool.add({
+            // timeout: (e) => e,
+            packet: {match: {idx: ++idx, tag: tag1}}
+        });
+        const fn = packetPool.fulfill(rq);
+        tt.equal(fn(), undefined, 'should return void');
+        tt.end();
+    });
 
-    // t.test('Packet 6', (tt) => {
-    //     const packets2 = require('../../lib/packet')(
-    //         {tag: tag0}
-    //     );
-    //     const rq = packets2.add({
-    //         // timeout: (e) => e,
-    //         match: {idx: ++idx}
-    //     });
-    //     tt.rejects(
-    //         rq.promise,
-    //         {error: ForceDestroy.create('')},
-    //         'should reject'
-    //     );
-    //     packets2.destroy();
-    //     tt.end();
-    // });
+    t.test('Packet 6', (tt) => {
+        const packets2 = require('../../lib/packet')(
+            {tag: tag0}
+        );
+        const rq = packets2.add({
+            // timeout: (e) => e,
+            match: {idx: ++idx}
+        });
+        tt.rejects(
+            rq.promise,
+            {error: ForceDestroy.create('')},
+            'should reject'
+        );
+        packets2.destroy();
+        tt.end();
+    });
 
     t.end();
 });
