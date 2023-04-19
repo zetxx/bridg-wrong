@@ -1,18 +1,18 @@
 const tap = require('tap');
 const {
-    vectorPassFactory,
+    wirePassFactory,
     timeOut,
-    vectorFactory,
+    wireFactory,
     methodRegisterFactory
 } = require('../helpers');
 
-const v1 = vectorFactory({config: {id: 'V'}});
+const v1 = wireFactory({config: {id: 'V'}});
 methodRegisterFactory(v1, 'a.in');
 methodRegisterFactory(v1, 'a.out');
 
-tap.test('Vector: in method not found', async(l0) => {
+tap.test('Wire: in method not found', async(l0) => {
     try {
-        const vr1 = vectorPassFactory(
+        const vr1 = wirePassFactory(
             v1,
             ['UnExisting Method aa.in existing a.out'],
             false,
@@ -27,16 +27,16 @@ tap.test('Vector: in method not found', async(l0) => {
     }
 });
 
-tap.test('Vector: out method not found', async(l0) => {
+tap.test('Wire: out method not found', async(l0) => {
     try {
-        const vr1 = vectorPassFactory(
+        const vr1 = wirePassFactory(
             v1,
             ['UnExisting Method aa.in existing a.out'],
             false,
             ['a', 'in']
         );
         const p = timeOut(async() => {
-            const vr2 = vectorPassFactory(
+            const vr2 = wirePassFactory(
                 v1,
                 ['abc'],
                 false,

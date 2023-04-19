@@ -1,14 +1,12 @@
 const tap = require('tap');
 const Vector = require('../../../lib/vector');
 const {
-    timeOut,
-    vectorFactory,
-    methodRegisterFactory
+    wireFactory,
 } = require('../helpers');
 
 tap.test('Vector: Simple checks and coverage', async(l0) => {
     Vector();
-    const v1 = vectorFactory({config: {id: 'V', request: {waitTime: 3000}}});
+    const v1 = wireFactory({config: {id: 'V', request: {waitTime: 3000}}});
     l0.resolves(v1.start(), 'start should resolves');
     l0.same(v1.ctx(), {}, 'should return empty object, context is empty');
     l0.same(v1.ctx({a: 1}), {a: 1}, 'should return {a: 1}, first value that is set');

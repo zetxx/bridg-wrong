@@ -1,4 +1,4 @@
-const Vector = require('../../lib/vector');
+const Wire = require('../../lib/wire');
 
 const timeOut = (cb, time) => new Promise(
     (resolve, reject) =>
@@ -10,7 +10,7 @@ const timeOut = (cb, time) => new Promise(
         )
 );
 
-const vectorFactory = ({
+const wireFactory = ({
     log = (level, msg) => console[level](msg),
     config: {
         request: {
@@ -18,7 +18,7 @@ const vectorFactory = ({
         } = {},
         id
     } = {}
-} = {}) => Vector({
+} = {}) => Wire({
     log,
     config: {
         request: {
@@ -44,7 +44,7 @@ const methodRegisterFactory = (
     });
 };
 
-const vectorPassFactory = (
+const wirePassFactory = (
     vector,
     payload,
     error,
@@ -87,7 +87,7 @@ const routerPassFactory = (
 module.exports = {
     methodRegisterFactory,
     timeOut,
-    vectorFactory,
-    vectorPassFactory,
+    wireFactory,
+    wirePassFactory,
     routerPassFactory
 };

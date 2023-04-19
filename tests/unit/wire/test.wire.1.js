@@ -1,18 +1,17 @@
 const tap = require('tap');
 const {
-    vectorPassFactory,
-    timeOut,
-    vectorFactory,
+    wirePassFactory,
+    wireFactory,
     methodRegisterFactory
 } = require('../helpers');
 
-const v1 = vectorFactory({config: {id: 'V'}});
+const v1 = wireFactory({config: {id: 'V'}});
 methodRegisterFactory(v1, 'a.in');
 methodRegisterFactory(v1, 'a.out');
 
-tap.test('Vector: Timeouts', async(l0) => {
+tap.test('Wire: Timeouts', async(l0) => {
     try {
-        const vr1 = vectorPassFactory(
+        const vr1 = wirePassFactory(
             v1,
             ['UnExisting Method aa.in existing a.out'],
             false,
