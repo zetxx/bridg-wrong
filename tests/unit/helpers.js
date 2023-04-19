@@ -3,7 +3,7 @@ const Wire = require('../../lib/wire');
 const timeOut = (cb, time) => new Promise(
     (resolve, reject) =>
         setTimeout(
-            async () => {
+            async() => {
                 resolve(await cb());
             },
             time
