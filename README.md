@@ -10,7 +10,7 @@ sends back to internal packeter.
 ## Filesystem structure
 
 - methods(`lib/methods`): holds registered methods
-- packets(`lib/packet`): holds all packet that are send somewhere.
+- packets(`lib/packets`): holds all packet that are send somewhere.
 - wire: this is half of the crossroad
 - router: routes between two wires, this implements 2 wires intersection
 

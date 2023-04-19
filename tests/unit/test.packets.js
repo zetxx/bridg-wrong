@@ -3,7 +3,7 @@ const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
-} = require('../../lib/packet/errors');
+} = require('../../lib/packets/errors');
 
 const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
@@ -11,14 +11,14 @@ let idx = 0;
 const tag1 = Symbol('tag.1');
 
 tap.test('Packet', async(t) => {
-    const packetPool = require('../../lib/packet')({
+    const packetPool = require('../../lib/packets')({
         config: {
             waitTime: defaultWaitTime
         },
         tag: tag0
     });
     // coverage
-    require('../../lib/packet')();
+    require('../../lib/packets')();
 
     t.type(packetPool, 'object', 'packet Is object');
     t.type(
@@ -204,7 +204,7 @@ tap.test('Packet', async(t) => {
     });
 
     t.test('Packet 6', (tt) => {
-        const packets2 = require('../../lib/packet')(
+        const packets2 = require('../../lib/packets')(
             {tag: tag0}
         );
         const rq = packets2.add({
