@@ -13,7 +13,7 @@ const timeOut = (cb, time) => new Promise(
 const wireFactory = ({
     log = (level, msg) => console[level](msg),
     config: {
-        request: {
+        packet: {
             waitTime = 1000000
         } = {},
         id
@@ -21,7 +21,7 @@ const wireFactory = ({
 } = {}) => Wire({
     log,
     config: {
-        request: {
+        packet: {
             waitTime
         },
         id
@@ -29,11 +29,11 @@ const wireFactory = ({
 });
 
 const methodRegisterFactory = (
-    vector,
+    wire,
     name,
     fn
 ) => {
-    vector.methods.add({
+    wire.methods.add({
         method: name,
         fn: fn || (({payload, error}) => {
             if (error) {
@@ -45,13 +45,13 @@ const methodRegisterFactory = (
 };
 
 const wirePassFactory = (
-    vector,
+    wire,
     payload,
     error,
     [method, direction],
     match = {}
 ) => {
-    return vector.pass({
+    return wire.pass({
         packet: {
             ...(payload && {payload: payload.concat([`>${method}.${direction}`])}),
             ...(error && {error}),

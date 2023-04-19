@@ -1,36 +1,34 @@
 const tap = require('tap');
 const Router = require('../../../lib/router');
 const {
-    RouterErrorVectorNotFound
+    RouterErrorWireNotFound
 } = require('../../../lib/router/errors');
 const {
-    routerPassFactory,
-    timeOut,
-    vectorFactory,
+    wireFactory,
     methodRegisterFactory
 } = require('../helpers');
 
-const log = (level, msg) => console[level](msg)
+const log = (level, msg) => console[level](msg)''
 
 tap.test('Router', async(l0) => {
-    const v1 = vectorFactory({
+    const v1 = wireFactory({
         log,
         config: {
-            request: {waitTime: 5000},
+            packet: {waitTime: 5000},
             id: 'v1'
         }
     });
-    const v2 = vectorFactory({
+    const v2 = wireFactory({
         log,
         config: {
-            request: {waitTime: 10000},
+            packet: {waitTime: 10000},
             id: 'v2'
         }
     });
 
     const router = Router({
         log,
-        vectors: [v1, v2]
+        wires: [v1, v2]
     });
 
     methodRegisterFactory(v1, 'a.in');
@@ -39,9 +37,9 @@ tap.test('Router', async(l0) => {
     methodRegisterFactory(v2, 'a.out');
 
     try {
-        await router.pass({vector: NaN});
+        await router.pass({wire: NaN});
     } catch (e) {
-        l0.match(e, RouterErrorVectorNotFound({vector: NaN}), 'vector not found');
+        l0.match(e, RouterErrorWireNotFound({wire: NaN}), 'wire not found');
     }
     l0.end();
 });

@@ -1,2 +1,2 @@
 for coverage
-`./node_modules/tap/bin/run.js --coverage-report=lcov ./tests/unit/vector`
+`./node_modules/tap/bin/run.js --coverage-report=lcov ./tests/unit/wire`
