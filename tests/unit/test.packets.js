@@ -45,7 +45,6 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
-            // timeout: (e) => e,
             packet: {
                 match: {idx: ++idx, tag: tag1},
                 meta: {trace: -1}
@@ -142,24 +141,8 @@ tap.test('Packet', async(t) => {
         tt.end();
     });
 
-    t.test('Packet 2 Timeout', (tt) => {
+    t.test('Packet 2 Timeout', async(tt) => {
         const rq = packetPool.add({
-            timeout: ({error}) => {
-                tt.same(
-                    rq.config,
-                    {waitTime: 550},
-                    'config should match'
-                );
-                tt.same(
-                    error,
-                    WaitTimeExpired.create(
-                        'WaitTimeExpired',
-                        {tag: tag0}
-                    ),
-                    'should be expire time error'
-                );
-                tt.end();
-            },
             packet: {
                 meta: {
                     config: {
@@ -169,11 +152,28 @@ tap.test('Packet', async(t) => {
                 match: {idx: ++idx, tag: tag1}
             }
         });
+        tt.same(
+            rq.config,
+            {waitTime: 550},
+            'config should match'
+        );
+        try {
+            await rq.promise;
+        } catch (error) {
+            tt.same(
+                error,
+                WaitTimeExpired.create(
+                    'WaitTimeExpired',
+                    {tag: tag0}
+                ),
+                'should be expire time error'
+            );
+            tt.end();
+        }
     });
 
     t.test('Packet 3 resolve with error', (tt) => {
         const rq = packetPool.add({
-            // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const errorMsg = {error: new Error()};
@@ -185,7 +185,6 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 4', (tt) => {
         const rq = packetPool.add({
-            // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const fn = packetPool.fulfill(rq);
@@ -195,7 +194,6 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 5', (tt) => {
         const rq = packetPool.add({
-            // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
         });
         const fn = packetPool.fulfill(rq);
@@ -208,7 +206,6 @@ tap.test('Packet', async(t) => {
             {tag: tag0}
         );
         const rq = packets2.add({
-            // timeout: (e) => e,
             match: {idx: ++idx}
         });
         tt.rejects(
