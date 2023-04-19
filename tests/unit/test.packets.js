@@ -3,48 +3,47 @@ const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
-} = require('../../lib/requests/errors');
+} = require('../../lib/packet/errors');
 
 const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
 let idx = 0;
 const tag1 = Symbol('tag.1');
 
-
-tap.test('Request', async(t) => {
-    const reqPool = require('../../lib/requests')({
+tap.test('Packet', async(t) => {
+    const reqPool = require('../../lib/packet')({
         config: {
             waitTime: defaultWaitTime
         },
         tag: tag0
     });
     // coverage
-    require('../../lib/requests')();
+    require('../../lib/packet')();
 
-    t.type(reqPool, 'object', 'request Is object');
+    t.type(reqPool, 'object', 'packet Is object');
     t.type(
         reqPool.len,
         'function',
-        'request.len is function'
+        'packet.len is function'
     );
-    t.equal(reqPool.len(), 0, '0 requests');
+    t.equal(reqPool.len(), 0, '0 packets');
     t.type(
         reqPool.add,
         'function',
-        'request.add is function'
+        'packet.add is function'
     );
     t.type(
         reqPool.find,
         'function',
-        'request.find is function'
+        'packet.find is function'
     );
     t.type(
         reqPool.fulfill,
         'function',
-        'request.call is function'
+        'packet.call is function'
     );
 
-    t.test('Request 1', async(tt) => {
+    t.test('Packet 1', async(tt) => {
         const rq = reqPool.add({
             // timeout: (e) => e,
             packet: {
@@ -95,37 +94,37 @@ tap.test('Request', async(t) => {
             ['idx', 'tag'],
             'match object should have keys: idx, tag'
         );
-    
+
         reqPool.find({idx: rq.idx});
         tt.type(
             reqPool.find(),
             'undefined',
-            'should not find request'
+            'should not find packet'
         );
         tt.type(
             reqPool.find({}),
             'undefined',
-            'should not find request'
+            'should not find packet'
         );
         tt.type(
             reqPool.find({idx: rq.idx}),
             'object',
-            'should find request'
+            'should find packet'
         );
         tt.type(
             reqPool.find({idx: rq.idx, tag: tag0}),
             'object',
-            'should find request'
+            'should find packet'
         );
         tt.type(
             reqPool.find({idx: -1}),
             'undefined',
-            'should not find request'
+            'should not find packet'
         );
         tt.type(
             reqPool.find({idx: rq.idx, tag: 'nomatch'}),
             'undefined',
-            'should not find request'
+            'should not find packet'
         );
         tt.throws(
             () => reqPool.fulfill({}),
@@ -142,8 +141,8 @@ tap.test('Request', async(t) => {
         tt.same(await rq.promise, {a: 2}, 'should be same');
         tt.end();
     });
-    
-    t.test('Request 2 Timeout', (tt) => {
+
+    t.test('Packet 2 Timeout', (tt) => {
         const rq = reqPool.add({
             timeout: ({error}) => {
                 tt.same(
@@ -167,12 +166,12 @@ tap.test('Request', async(t) => {
                         waitTime: 550
                     }
                 },
-                match: {idx: ++idx, tag: tag1},
+                match: {idx: ++idx, tag: tag1}
             }
         });
     });
- 
-    t.test('Request 3 resolve with error', (tt) => {
+
+    t.test('Packet 3 resolve with error', (tt) => {
         const rq = reqPool.add({
             // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
@@ -184,7 +183,7 @@ tap.test('Request', async(t) => {
         tt.end();
     });
 
-    t.test('Request 4', (tt) => {
+    t.test('Packet 4', (tt) => {
         const rq = reqPool.add({
             // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
@@ -194,7 +193,7 @@ tap.test('Request', async(t) => {
         tt.end();
     });
 
-    t.test('Request 5', (tt) => {
+    t.test('Packet 5', (tt) => {
         const rq = reqPool.add({
             // timeout: (e) => e,
             packet: {match: {idx: ++idx, tag: tag1}}
@@ -204,11 +203,11 @@ tap.test('Request', async(t) => {
         tt.end();
     });
 
-    t.test('Request 6', (tt) => {
-        const requests2 = require('../../lib/requests')(
+    t.test('Packet 6', (tt) => {
+        const packets2 = require('../../lib/packet')(
             {tag: tag0}
         );
-        const rq = requests2.add({
+        const rq = packets2.add({
             // timeout: (e) => e,
             match: {idx: ++idx}
         });
@@ -217,10 +216,9 @@ tap.test('Request', async(t) => {
             {error: ForceDestroy.create('')},
             'should reject'
         );
-        requests2.destroy();
+        packets2.destroy();
         tt.end();
     });
 
     t.end();
 });
-

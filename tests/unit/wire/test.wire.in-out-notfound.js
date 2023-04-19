@@ -18,7 +18,7 @@ tap.test('Wire: in method not found', async(l0) => {
             false,
             ['aa', 'in']
         );
-        await vr1.request.promise;
+        await vr1.packet.promise;
     } catch (e) {
         l0.same(e.error.message, 'method: aa.in not found', 'method aa.in not found');
     } finally {
@@ -41,11 +41,11 @@ tap.test('Wire: out method not found', async(l0) => {
                 ['abc'],
                 false,
                 ['aa', 'out'],
-                {idx: vr1.request.idx, tag: vr1.request.tag}
+                {idx: vr1.packet.idx, tag: vr1.packet.tag}
             );
-            l0.same(vr2.request, vr1.request, 'returned requests should be same');
+            l0.same(vr2.packet, vr1.packet, 'returned packets should be same');
         }, 1000);
-        await vr1.request.promise;
+        await vr1.packet.promise;
     } catch (e) {
         l0.same(e.error.message, 'method: aa.out not found', 'method aa.out not found');
     } finally {
@@ -53,4 +53,3 @@ tap.test('Wire: out method not found', async(l0) => {
         l0.end();
     }
 });
-

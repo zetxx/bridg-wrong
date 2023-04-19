@@ -17,7 +17,7 @@ tap.test('Wire: Timeouts', async(l0) => {
             false,
             ['aa', 'in']
         );
-        await vr1.request.promise;
+        await vr1.packet.promise;
     } catch (e) {
         l0.same(e.error.message, 'method: aa.in not found', 'method aa.in not found');
     } finally {

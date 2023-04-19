@@ -24,11 +24,11 @@ tap.test('Wire: in/out ok', async(l0) => {
                 ['out'],
                 false,
                 ['a', 'out'],
-                {idx: vr1.request.idx, tag: vr1.request.tag}
+                {idx: vr1.packet.idx, tag: vr1.packet.tag}
             );
-            l0.same(vr2.request, vr1.request, 'returned requests should be same');
+            l0.same(vr2.packet, vr1.packet, 'returned packets should be same');
         }, 100);
-        const res = await vr1.request.promise;
+        const res = await vr1.packet.promise;
         l0.same(res.payload, ['out', '>a.out', 'X:a.out'], 'result should match');
     } catch (e) {
         console.error(e);
