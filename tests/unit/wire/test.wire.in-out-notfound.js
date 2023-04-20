@@ -41,7 +41,7 @@ tap.test('Wire: out method not found', async(l0) => {
                 ['abc'],
                 false,
                 ['aa', 'out'],
-                {idx: vr1.packet.idx, tag: vr1.packet.tag}
+                {idx: vr1.packet.headers.idx, tag: vr1.packet.config.tag}
             );
             l0.same(vr2.packet, vr1.packet, 'returned packets should be same');
         }, 1000);

@@ -45,28 +45,24 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
-            packet: {
-                match: {idx: ++idx, tag: tag1},
-                meta: {trace: -1}
-            }
+            match: {idx: ++idx, tag: tag1},
+            headers: {trace: -1}
         });
         tt.same(
-            rq.idx > 0,
+            rq.headers.idx > 0,
             true,
             'index should be greater than 0'
         );
         tt.same(
-            rq.trace,
+            rq.headers.trace,
             -1,
             'trace id should be same as passed'
         );
         tt.same(
             rq.config,
-            {waitTime: defaultWaitTime},
+            {waitTime: defaultWaitTime, tag: tag0},
             'config should match'
         );
-        tt.same(rq.tag, tag0, 'tag should match');
-        tt.same(rq.tag, tag0, 'tag should match');
         tt.same(
             rq.promise instanceof Promise,
             true,
@@ -106,12 +102,12 @@ tap.test('Packet', async(t) => {
             'should not find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.idx}),
+            packetPool.find({idx: rq.headers.idx}),
             'object',
             'should find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.idx, tag: tag0}),
+            packetPool.find({idx: rq.headers.idx, tag: tag0}),
             'object',
             'should find packet'
         );
@@ -121,7 +117,7 @@ tap.test('Packet', async(t) => {
             'should not find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.idx, tag: 'nomatch'}),
+            packetPool.find({idx: rq.headers.idx, tag: 'nomatch'}),
             'undefined',
             'should not find packet'
         );
@@ -143,18 +139,14 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 2 Timeout', async(tt) => {
         const rq = packetPool.add({
-            packet: {
-                meta: {
-                    config: {
-                        waitTime: 550
-                    }
-                },
-                match: {idx: ++idx, tag: tag1}
-            }
+            config: {
+                waitTime: 550
+            },
+            match: {idx: ++idx, tag: tag1}
         });
         tt.same(
             rq.config,
-            {waitTime: 550},
+            {waitTime: 550, tag: tag0},
             'config should match'
         );
         try {
@@ -174,7 +166,7 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 3 resolve with error', (tt) => {
         const rq = packetPool.add({
-            packet: {match: {idx: ++idx, tag: tag1}}
+            match: {idx: ++idx, tag: tag1}
         });
         const errorMsg = {error: new Error()};
         const fn2 = packetPool.fulfill(rq);
@@ -185,7 +177,7 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 4', (tt) => {
         const rq = packetPool.add({
-            packet: {match: {idx: ++idx, tag: tag1}}
+            match: {idx: ++idx, tag: tag1}
         });
         const fn = packetPool.fulfill(rq);
         tt.equal(fn({}), undefined, 'should return void');
@@ -194,7 +186,7 @@ tap.test('Packet', async(t) => {
 
     t.test('Packet 5', (tt) => {
         const rq = packetPool.add({
-            packet: {match: {idx: ++idx, tag: tag1}}
+            match: {idx: ++idx, tag: tag1}
         });
         const fn = packetPool.fulfill(rq);
         tt.equal(fn(), undefined, 'should return void');
