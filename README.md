@@ -40,7 +40,7 @@ wire.methods.add({
     // it is called right after packet is received
     method: 'a',
     // method that will be executed
-    // when wire.pass({payload: ..., meta: {method: 'a.in'}}) is called
+    // when wire.pass({payload: ..., header: {method: 'a.in'}}) is called
     fn: ({payload, error}) => {
         // do something useful
         return ...;
@@ -53,7 +53,7 @@ wire.methods.add({
     // register method a for incoming packet
     method: '*',
     // method that will be executed
-    // when wire.pass({payload: ..., meta: {method: 'a.in'}}) is called
+    // when wire.pass({payload: ..., header: {method: 'a.in'}}) is called
     fn: ({payload, error}) => {
         // do something useful
         return ...;
@@ -65,7 +65,7 @@ wire.methods.add({
 // actual method execution
 const someResult = await wire.pass({
     payload: ...,
-    meta: {method: 'a'}
+    header: {method: 'a'}
 });
 
 ```

@@ -42,7 +42,7 @@ tap.test('Method', (t) => {
     t.rejects(
         methods.call({
             ctx: {
-                meta: {
+                header: {
                     method: 'abcd'
                 }
             },
@@ -72,7 +72,7 @@ tap.test('Method', (t) => {
     t.resolves(
         methods.call({
             ctx: {
-                meta: {
+                header: {
                     method: 'abc'
                 }
             },
@@ -84,7 +84,7 @@ tap.test('Method', (t) => {
     t.resolveMatch(
         methods.call({
             ctx: {
-                meta: {
+                header: {
                     method: 'abc'
                 }
             },

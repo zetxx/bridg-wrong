@@ -48,16 +48,15 @@ const wirePassFactory = (
     wire,
     payload,
     error,
-    [method, direction],
+    [method],
     match = {}
 ) => {
     return wire.pass({
         packet: {
-            ...(payload && {payload: payload.concat([`>${method}.${direction}`])}),
+            ...(payload && {payload: payload.concat([`>${method}`])}),
             ...(error && {error}),
-            meta: {
-                method,
-                direction
+            header: {
+                method
             },
             match
         }
@@ -68,16 +67,15 @@ const routerPassFactory = (
     router,
     payload,
     error,
-    [method, direction],
+    [method],
     match = {}
 ) => {
     return router.pass({
         packet: {
-            ...(payload && {payload: payload.concat([`>${method}.${direction}`])}),
+            ...(payload && {payload: payload.concat([`>${method}`])}),
             ...(error && {error}),
-            meta: {
-                method,
-                direction
+            header: {
+                method
             },
             match
         }

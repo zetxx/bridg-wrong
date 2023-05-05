@@ -46,15 +46,15 @@ tap.test('Packet', async(t) => {
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
             match: {idx: ++idx, tag: tag1},
-            headers: {trace: -1}
+            header: {trace: -1}
         });
         tt.same(
-            rq.headers.idx > 0,
+            rq.header.idx > 0,
             true,
             'index should be greater than 0'
         );
         tt.same(
-            rq.headers.trace,
+            rq.header.trace,
             -1,
             'trace id should be same as passed'
         );
@@ -102,12 +102,12 @@ tap.test('Packet', async(t) => {
             'should not find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.headers.idx}),
+            packetPool.find({idx: rq.header.idx}),
             'object',
             'should find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.headers.idx, tag: tag0}),
+            packetPool.find({idx: rq.header.idx, tag: tag0}),
             'object',
             'should find packet'
         );
@@ -117,7 +117,7 @@ tap.test('Packet', async(t) => {
             'should not find packet'
         );
         tt.type(
-            packetPool.find({idx: rq.headers.idx, tag: 'nomatch'}),
+            packetPool.find({idx: rq.header.idx, tag: 'nomatch'}),
             'undefined',
             'should not find packet'
         );

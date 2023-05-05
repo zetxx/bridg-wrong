@@ -24,7 +24,7 @@ tap.test('Wire: in/out ok', async(l0) => {
                 ['out'],
                 false,
                 ['a', 'out'],
-                {idx: vr1.packet.headers.idx, tag: vr1.packet.config.tag}
+                {idx: vr1.packet.header.idx, tag: vr1.packet.config.tag}
             );
             l0.same(vr2.packet, vr1.packet, 'returned packets should be same');
         }, 100);
