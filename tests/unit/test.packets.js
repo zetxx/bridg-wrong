@@ -1,25 +1,51 @@
 const tap = require('tap');
-const {Packets} = require('../../lib/packets');
+const {Packets, merge} = require('../../lib/packets');
 const {
     NotFound,
     WaitTimeExpired,
     ForceDestroy
 } = require('../../lib/packets/errors');
+const Timeout = setTimeout(function(){}, 0).constructor;
 
 const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
 let idx = 0;
 const tag1 = Symbol('tag.1');
 
-tap.test('Packet', async(t) => {
+tap.test('Packets', async(t) => {
     const packetPool = Packets({
         config: {
-            waitTime: defaultWaitTime
-        },
-        tag: tag0
+            waitTime: defaultWaitTime,
+            tag: tag0
+        }
     });
     // coverage
 
+    t.type(
+        merge,
+        'function',
+        'merge should be function'
+    );
+    t.same(
+        merge([{}, {}]),
+        {payload: undefined, header: {}, match: {}},
+        'merge output'
+    );
+    t.same(
+        merge([{}, {payload: 1}]),
+        {payload: 1, header: {}, match: {}},
+        'merge packet'
+    );
+    t.same(
+        merge([{header: {a: 1}, match: {a: 1}}, {header: {a: 2}, match: {a: 2}, payload: 1}]),
+        {payload: 1, header: {a: 2}, match: {a: 2}},
+        'merge packet overwride'
+    );
+    t.same(
+        merge([{header: {a: 1}, match: {a: 1}}, {header: {b: 2}, match: {b: 2}, payload: 1}]),
+        {payload: 1, header: {a: 1, b: 2}, match: {a: 1, b: 2}},
+        'merge packet new'
+    );
     t.type(packetPool, 'object', 'packet Is object');
     t.type(
         packetPool.len,
@@ -33,64 +59,92 @@ tap.test('Packet', async(t) => {
         'packet.add is function'
     );
     t.type(
+        packetPool.acquire,
+        'function',
+        'packet.acquire is function'
+    );
+    t.type(
         packetPool.find,
         'function',
         'packet.find is function'
+    );
+    t.type(
+        merge,
+        'function',
+        'merge is function'
     );
     t.type(
         packetPool.fulfill,
         'function',
         'packet.call is function'
     );
-
+    const p1 = packetPool.add({
+        match: {idx: -100, tag: tag1},
+        header: {trace: -1}
+    });
+    const p2 = packetPool.add({
+        config: {waitTime: 100000000},
+        match: {idx: -100, tag: tag1},
+        header: {trace: -1}
+    });
+    packetPool.fulfill(p1)({});
+    packetPool.fulfill(p2)({});
+    t.same(
+        Object.keys(p1).sort(),
+        ['config', 'header', 'match', 'state', 'timeout'],
+        '"add" match object keys [config, header, match, state, timeout]'
+    );
+    t.same(
+        p1.header,
+        {trace: -1, idx: 1, method: undefined},
+        'header should natch'
+    );
+    t.same(
+        p1.config,
+        {waitTime: defaultWaitTime, tag: tag0},
+        'config waitTime'
+    );
+    t.same(
+        p2.config,
+        {waitTime: 100000000, tag: tag0},
+        'config waitTime 100000000'
+    );
+    t.same(
+        Object.keys(p1.match),
+        ['idx', 'tag'],
+        'match object should have keys: idx, tag'
+    );
+    t.same(
+        p1.match,
+        {idx: -100, tag: tag1},
+        'config waitTime'
+    );
+    t.same(
+        p1.state.current instanceof Promise,
+        true,
+        'should be instance of promise'
+    );
+    t.type(
+        p1.state.resolve,
+        'function',
+        'resole should be function'
+    );
+    t.type(
+        p1.state.reject,
+        'function',
+        'reject should be function'
+    );
+    t.same(
+        p1.timeout instanceof Timeout,
+        true,
+        'timeout should be instance of Timeout'
+    );
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
             match: {idx: ++idx, tag: tag1},
             header: {trace: -1}
         });
-        tt.same(
-            rq.header.idx > 0,
-            true,
-            'index should be greater than 0'
-        );
-        tt.same(
-            rq.header.trace,
-            -1,
-            'trace id should be same as passed'
-        );
-        tt.same(
-            rq.config,
-            {waitTime: defaultWaitTime, tag: tag0},
-            'config should match'
-        );
-        tt.same(
-            rq.state.current instanceof Promise,
-            true,
-            'should be instance of promise'
-        );
-        tt.type(
-            rq.state.resolve,
-            'function',
-            'resole should be function'
-        );
-        tt.type(
-            rq.state.reject,
-            'function',
-            'reject should be function'
-        );
-        tt.type(
-            rq.timeout,
-            'object',
-            'timeout should be function'
-        );
 
-        tt.same(
-            Object.keys(rq.match),
-            ['idx', 'tag'],
-            'match object should have keys: idx, tag'
-        );
-
-        packetPool.find({idx: rq.idx});
         tt.type(
             packetPool.find(),
             'undefined',
