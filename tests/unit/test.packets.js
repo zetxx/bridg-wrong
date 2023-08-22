@@ -1,4 +1,5 @@
 const tap = require('tap');
+const {Packets} = require('../../lib/packets');
 const {
     NotFound,
     WaitTimeExpired,
@@ -11,14 +12,13 @@ let idx = 0;
 const tag1 = Symbol('tag.1');
 
 tap.test('Packet', async(t) => {
-    const packetPool = require('../../lib/packets')({
+    const packetPool = Packets({
         config: {
             waitTime: defaultWaitTime
         },
         tag: tag0
     });
     // coverage
-    require('../../lib/packets')();
 
     t.type(packetPool, 'object', 'packet Is object');
     t.type(
@@ -64,17 +64,17 @@ tap.test('Packet', async(t) => {
             'config should match'
         );
         tt.same(
-            rq.promise instanceof Promise,
+            rq.state.current instanceof Promise,
             true,
             'should be instance of promise'
         );
         tt.type(
-            rq.resolve,
+            rq.state.resolve,
             'function',
             'resole should be function'
         );
         tt.type(
-            rq.reject,
+            rq.state.reject,
             'function',
             'reject should be function'
         );
@@ -133,7 +133,7 @@ tap.test('Packet', async(t) => {
             'should return function'
         );
         fn1({a: 2});
-        tt.same(await rq.promise, {a: 2}, 'should be same');
+        tt.same(await rq.state.current, {a: 2}, 'should be same');
         tt.end();
     });
 
@@ -150,7 +150,7 @@ tap.test('Packet', async(t) => {
             'config should match'
         );
         try {
-            await rq.promise;
+            await rq.state.current;
         } catch (error) {
             tt.same(
                 error,
@@ -170,7 +170,7 @@ tap.test('Packet', async(t) => {
         });
         const errorMsg = {error: new Error()};
         const fn2 = packetPool.fulfill(rq);
-        tt.rejects(rq.promise, errorMsg);
+        tt.rejects(rq.state.current, errorMsg);
         fn2(errorMsg);
         tt.end();
     });
@@ -194,14 +194,14 @@ tap.test('Packet', async(t) => {
     });
 
     t.test('Packet 6', (tt) => {
-        const packets2 = require('../../lib/packets')(
+        const packets2 = Packets(
             {tag: tag0}
         );
         const rq = packets2.add({
             match: {idx: ++idx}
         });
         tt.rejects(
-            rq.promise,
+            rq.state.current,
             {error: ForceDestroy.create('')},
             'should reject'
         );

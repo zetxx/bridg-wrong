@@ -10,8 +10,7 @@
             "name": "test unit",
             "program": "${workspaceFolder}/tests/unit/",
             "runtimeArgs": ["--trace-warnings"],
-            "outputCapture": "std",
-            "protocol": "inspector"
+            "outputCapture": "std"
         }
     ]
 }

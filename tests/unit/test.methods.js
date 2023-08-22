@@ -1,6 +1,7 @@
 const tap = require('tap');
-const methods = require('../../lib/methods')({tag: Symbol()});
+const {Methods} = require('../../lib/methods');
 const {NotFound} = require('../../lib/methods/errors');
+const methods = Methods({tag: Symbol()});
 
 tap.test('Method', (t) => {
     t.type(methods, 'object', 'method Is object');
@@ -21,14 +22,14 @@ tap.test('Method', (t) => {
     );
     methods.add({method: 'abc', fn: () => 1});
     
-    // t.throws(
-    //     () => methods.find(),
-    //     NotFound.create(
-    //         'method: {method} not found',
-    //         {method: undefined}
-    //     ),
-    //     'should throw'
-    // );
+    t.throws(
+        () => methods.find(),
+        NotFound.create(
+            'method: {method} not found',
+            {method: undefined}
+        ),
+        'should throw'
+    );
 
     t.throws(
         () => methods.find('abcd'),
