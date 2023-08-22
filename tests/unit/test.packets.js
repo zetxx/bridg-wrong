@@ -188,6 +188,75 @@ tap.test('Packets', async(t) => {
         );
         fn1({a: 2});
         tt.same(await rq.state.current, {a: 2}, 'should be same');
+        const p3 = packetPool.add({
+            config: {waitTime: 100000000},
+            match: {idx: 200, tag: tag1},
+            header: {trace: -1}
+        });
+        const m1 = packetPool.acquire({payload: 1, header: {}, match: {idx: p3.header.idx, tag: tag0}});
+        const m2 = packetPool.acquire({payload: 1, header: {}, match: {idx: p3.header.idx, tag: tag1}});
+        const m3 = packetPool.acquire({payload: 1, header: {idx: p3.header.idx, tag: tag1}});
+        const m4 = packetPool.acquire({payload: 1, header: m1.packet.header});
+        const m5 = packetPool.acquire({payload: 1, header: {...m1.packet.header, tag: tag1}});
+        tt.same(
+            m1.found,
+            true,
+            'm1 acquire {}.found should be true'
+        );
+        tt.same(
+            m4.found,
+            true,
+            'm4 acquire {}.found should be true'
+        );
+        tt.same(
+            m1.matched,
+            true,
+            'm1 acquire {}.matched should be true'
+        );
+        tt.same(
+            m4.matched,
+            false,
+            'm4 acquire {}.matched should be true'
+        );
+        tt.type(
+            m1.packet,
+            'object',
+            'acquire {}.packet should be object'
+        );
+        packetPool.fulfill(p3)({});
+        tt.type(
+            m2.packet,
+            'object',
+            'm2 acquire {}.packet should be object/new packet'
+        );
+        tt.same(
+            m2.found || m2.matched,
+            undefined,
+            'm2 acquire {}.found, {}.matched should be undefined'
+        );
+        tt.type(
+            m3.packet,
+            'object',
+            'm3 acquire {}.packet should be object/new packet'
+        );
+        tt.type(
+            m5.packet,
+            'object',
+            'm5 acquire {}.packet should be object/new packet'
+        );
+        tt.same(
+            m3.found || m3.matched,
+            undefined,
+            'm3 acquire {}.found, {}.matched should be undefined'
+        );
+        tt.same(
+            m5.found || m5.matched,
+            undefined,
+            'm5 acquire {}.found, {}.matched should be undefined'
+        );
+        packetPool.fulfill(m2.packet)({});
+        packetPool.fulfill(m3.packet)({});
+        packetPool.fulfill(m5.packet)({});
         tt.end();
     });
 
