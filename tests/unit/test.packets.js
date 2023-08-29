@@ -5,7 +5,7 @@ const {
     WaitTimeExpired,
     ForceDestroy
 } = require('../../lib/packets/errors');
-const Timeout = setTimeout(function(){}, 0).constructor;
+const Timeout = setTimeout(() => {}, 0).constructor;
 
 const tag0 = Symbol('tag.0');
 const defaultWaitTime = 1000;
@@ -96,17 +96,17 @@ tap.test('Packets', async(t) => {
     );
     t.same(
         p1.header,
-        {trace: -1, idx: 1, method: undefined},
-        'header should natch'
+        {trace: -1, idx: 1, method: undefined, tag: tag0},
+        'header should match'
     );
     t.same(
         p1.config,
-        {waitTime: defaultWaitTime, tag: tag0},
+        {waitTime: defaultWaitTime},
         'config waitTime'
     );
     t.same(
         p2.config,
-        {waitTime: 100000000, tag: tag0},
+        {waitTime: 100000000},
         'config waitTime 100000000'
     );
     t.same(
@@ -269,12 +269,12 @@ tap.test('Packets', async(t) => {
         });
         tt.same(
             rq.config,
-            {waitTime: 550, tag: tag0},
+            {waitTime: 550},
             'config should match'
         );
         try {
             await rq.state.current;
-        } catch (error) {
+        } catch ({error}) {
             tt.same(
                 error,
                 WaitTimeExpired.create(
