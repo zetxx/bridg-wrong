@@ -12,8 +12,9 @@ wf1.methodRegisterFactory({
         return a.payload.concat(['>a<']);
     }
 });
-
 tap.test('Wire', async(l0) => {
+    wireFactory({});
+    l0.same(typeof await (wf1.wire.start()), 'function', 'Start');
     l0.test('Methods "aa" and "*" should be: method not found', async(l1) => {
         try {
             const wp1 = wf1.wirePassFactory({
@@ -100,6 +101,10 @@ tap.test('Wire', async(l0) => {
             l1.same(e.error.message, 'WaitTimeExpired', 'should throw timeout: message');
             l1.end();
         }
+    });
+    l0.test('Destroy', async(l1) => {
+        wf1.wire.destroy();
+        l1.end();
     });
     l0.end();
 });
