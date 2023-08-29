@@ -18,49 +18,52 @@ const wireFactory = ({
         } = {},
         id
     } = {}
-} = {}) => Wire({
-    log,
-    config: {
-        packet: {
-            waitTime
-        },
-        id
-    }
-});
-
-const methodRegisterFactory = (
-    wire,
-    name,
-    fn
-) => {
-    wire.methods.add({
-        method: name,
-        fn: fn || (({payload, error}) => {
-            if (error) {
-                throw error;
-            }
-            return payload.concat([`X:${name}`]);
-        })
-    });
-};
-
-const wirePassFactory = (
-    wire,
-    payload,
-    error,
-    [method],
-    match = {}
-) => {
-    return wire.pass({
-        packet: {
-            ...(payload && {payload: payload.concat([`>${method}`])}),
-            ...(error && {error}),
-            header: {
-                method
+} = {}) => {
+    const wire = Wire({
+        log,
+        config: {
+            packet: {
+                waitTime
             },
-            match
+            id
         }
     });
+    return {
+        wire,
+        wirePassFactory: ({
+            payload,
+            error,
+            method,
+            config,
+            match = {}
+        }) => {
+            return wire.pass({
+                packet: {
+                    ...(payload && {payload: payload.concat([`>${method}`])}),
+                    ...(error && {error}),
+                    header: {
+                        method
+                    },
+                    match,
+                    config
+                }
+            });
+        },
+        methodRegisterFactory: ({
+            name,
+            fn
+        }) => {
+            wire.methods.add({
+                method: name,
+                fn: fn || (({payload, error}) => {
+                    if (error) {
+                        throw error;
+                    }
+                    return payload.concat([`X:${name}`]);
+                })
+            });
+        }
+    };
 };
 
 const routerPassFactory = (
@@ -83,9 +86,7 @@ const routerPassFactory = (
 };
 
 module.exports = {
-    methodRegisterFactory,
     timeOut,
     wireFactory,
-    wirePassFactory,
     routerPassFactory
 };
