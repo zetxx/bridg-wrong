@@ -11,7 +11,7 @@ const timeOut = (cb, time) => new Promise(
 );
 
 const wireFactory = ({
-    log = (level, msg) => console[level](msg),
+    log = ({level, payload}) => ({}),
     config: {
         packet: {
             waitTime = 1000000

@@ -80,12 +80,12 @@ tap.test('Packets', async(t) => {
     );
     const p1 = packetPool.add({
         match: {idx: -100, tag: tag1},
-        header: {trace: -1}
+        header: {trace: [-1], match: {a: 1}}
     });
     const p2 = packetPool.add({
         config: {waitTime: 100000000},
         match: {idx: -100, tag: tag1},
-        header: {trace: -1}
+        header: {trace: [-1]}
     });
     packetPool.fulfill(p1)({});
     packetPool.fulfill(p2)({});
@@ -96,7 +96,7 @@ tap.test('Packets', async(t) => {
     );
     t.same(
         p1.header,
-        {trace: -1, idx: 1, method: undefined, tag: tag0},
+        {trace: [-1, p1.header.idx], idx: 1, method: undefined, tag: tag0, match: {a: 1}},
         'header should match'
     );
     t.same(
@@ -110,14 +110,9 @@ tap.test('Packets', async(t) => {
         'config waitTime 100000000'
     );
     t.same(
-        Object.keys(p1.match),
-        ['idx', 'tag'],
-        'match object should have keys: idx, tag'
-    );
-    t.same(
         p1.match,
-        {idx: -100, tag: tag1},
-        'config waitTime'
+        undefined,
+        'match should be undefined'
     );
     t.same(
         p1.state.current instanceof Promise,
@@ -142,7 +137,7 @@ tap.test('Packets', async(t) => {
     t.test('Packet 1', async(tt) => {
         const rq = packetPool.add({
             match: {idx: ++idx, tag: tag1},
-            header: {trace: -1}
+            header: {trace: [-1]}
         });
 
         tt.type(
@@ -191,7 +186,7 @@ tap.test('Packets', async(t) => {
         const p3 = packetPool.add({
             config: {waitTime: 100000000},
             match: {idx: 200, tag: tag1},
-            header: {trace: -1}
+            header: {trace: [-1]}
         });
         const m1 = packetPool.acquire({payload: 1, header: {}, match: {idx: p3.header.idx, tag: tag0}});
         const m2 = packetPool.acquire({payload: 1, header: {}, match: {idx: p3.header.idx, tag: tag1}});

@@ -20,19 +20,19 @@ tap.test('Method', (t) => {
         'function',
         'method.call is function'
     );
-    methods.add({method: 'abc', fn: () => 1});
-    
+    methods.add({method: ['abc'], fn: () => 1});
+
     t.throws(
         () => methods.find(),
         NotFound.create(
             'method: {method} not found',
-            {method: undefined}
+            {method: ''}
         ),
         'should throw'
     );
 
     t.throws(
-        () => methods.find('abcd'),
+        () => methods.find(['abcd']),
         NotFound.create(
             'method: {method} not found',
             {method: 'abcd'}
@@ -44,10 +44,10 @@ tap.test('Method', (t) => {
         methods.call({
             ctx: {
                 header: {
-                    method: 'abcd'
+                    method: ['abcd']
                 }
             },
-            method: 'abcd'
+            method: ['abcd']
         }),
         NotFound.create(
             'method: {method} not found',
@@ -56,7 +56,7 @@ tap.test('Method', (t) => {
         'should throw'
     );
     t.throws(
-        () => methods.find('abcd'),
+        () => methods.find(['abcd']),
         NotFound.create(
             'method: {method} not found',
             {method: 'abcd'}
@@ -65,7 +65,7 @@ tap.test('Method', (t) => {
     );
 
     t.type(
-        methods.find('abc'),
+        methods.find(['abc']),
         'function',
         'method.find should returns function'
     );
@@ -74,10 +74,10 @@ tap.test('Method', (t) => {
         methods.call({
             ctx: {
                 header: {
-                    method: 'abc'
+                    method: ['abc']
                 }
             },
-            method: 'abc'
+            method: ['abc']
         }),
         'should resolves'
     );
@@ -86,10 +86,10 @@ tap.test('Method', (t) => {
         methods.call({
             ctx: {
                 header: {
-                    method: 'abc'
+                    method: ['abc']
                 }
             },
-            method: 'abc'
+            method: ['abc']
         }),
         1,
         'should resolves to value'
