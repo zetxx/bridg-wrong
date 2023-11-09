@@ -11,10 +11,12 @@
   },
   "devDependencies": {
     "semantic-release": "^22.0.7",
-    "tap": "^18.5.7"
+    "tap": "^18.5.7",
+    "jsdoc-tsimport-plugin": "1.0.5"
   },
   "scripts": {
-    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/"
+    "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
+    "gdocs": "jsdoc -c jsdoc.json ."
   },
   "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
   "repository": {
