@@ -1,6 +1,8 @@
 {
   "name": "bridg-wrong",
-  "description": "build",
+  "description": "",
+  "main": "./index.js",
+  "types": "./types/index.d.ts",
   "author": {
     "email": "zetxx@belogradchik.biz",
     "name": "Elin Angelov",
@@ -11,12 +13,14 @@
   },
   "devDependencies": {
     "semantic-release": "^22.0.7",
-    "tap": "^18.5.7",
-    "jsdoc-tsimport-plugin": "1.0.5"
+    "tap": "^18.5.8",
+    "jsdoc-tsimport-plugin": "1.0.5",
+    "typescript": "5.2.2"
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
-    "gdocs": "jsdoc -c jsdoc.json ."
+    "gdocs": "jsdoc -c jsdoc.json .",
+    "td": "npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
   "repository": {

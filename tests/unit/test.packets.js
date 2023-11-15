@@ -19,8 +19,8 @@ tap.test('Packets', async(t) => {
             tag: tag0
         }
     });
-    // coverage
 
+    // coverage
     t.type(
         merge,
         'function',
