@@ -1,7 +1,12 @@
 export const unused: {};
-export type config = {
-    waitTime: number;
-};
+/**
+ * - time that req will wait before times out
+ */
+export type waitTime = number;
+/**
+ * - tags packet, tag tells to which process/microservice (logically) packet belongs
+ */
+export type tag = Symbol;
 export type match = {
     idx: number;
     method: string[];
@@ -14,42 +19,17 @@ export type header = {
     trace: string;
 };
 /**
- * - The packet object
+ * - Packet
  */
-export type packet = {
+export type Packet = {
     header: header;
     match: match;
     config: {
-        waitTime: number;
+        waitTime: waitTime;
     };
     state: {
         resolve: Function;
         reject: Function;
         current: Promise<any>;
     };
-};
-/**
- * - Inventory
- */
-export type Inventory = {
-    /**
-     * - adds new packet
-     */
-    add: Function;
-    /**
-     * - finds packet
-     */
-    find: Function;
-    /**
-     * - inventory length
-     */
-    len: Function;
-    /**
-     * - search for packet in inventory, if not found, create new packet and adds it to inventory
-     */
-    acquire: Function;
-    /**
-     * - remove & destroy packet from inventory
-     */
-    destroy: Function;
 };
