@@ -19,8 +19,7 @@
   },
   "scripts": {
     "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
-    "gdocs": "jsdoc -c jsdoc.json .",
-    "td": "npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
+    "gdocs": "jsdoc -c jsdoc.json . && npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
   },
   "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
   "repository": {

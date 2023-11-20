@@ -15,4 +15,7 @@ export type Method = {
     find: Function;
     call: Function;
 };
-export type method = Map<any, any>;
+export type method = {
+    method: string;
+    fn: Function;
+};
