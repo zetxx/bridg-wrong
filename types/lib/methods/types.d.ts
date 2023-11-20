@@ -10,7 +10,7 @@ export type call = {
     method: string[];
     ctx: object;
 };
-export type Method = {
+export type Api = {
     add: Function;
     find: Function;
     call: Function;
