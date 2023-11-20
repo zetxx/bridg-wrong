@@ -1,9 +1,12 @@
 /**
  * Init
  * @param {Object} init
- * @param {Symbol} init.tag
+ * @param {Object} init.config
+ * @param {Symbol} init.config.tag
  * @returns {import('./types').Api}
  */
-export function Methods({ tag }: {
-    tag: Symbol;
+export function Methods({ config: { tag } }: {
+    config: {
+        tag: Symbol;
+    };
 }): import('./types').Api;

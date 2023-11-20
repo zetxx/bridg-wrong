@@ -15,7 +15,9 @@ const tag1 = Symbol('tag.1');
 tap.test('Packets', async(t) => {
     const packetPool = Packets({
         config: {
-            waitTime: defaultWaitTime,
+            packet: {
+                waitTime: defaultWaitTime,
+            },
             tag: tag0
         }
     });

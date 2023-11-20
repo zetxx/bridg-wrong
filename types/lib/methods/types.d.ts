@@ -15,7 +15,4 @@ export type Api = {
     find: Function;
     call: Function;
 };
-export type method = {
-    method: string;
-    fn: Function;
-};
+export type methods = Map<string, Function>;

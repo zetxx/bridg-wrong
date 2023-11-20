@@ -10,7 +10,7 @@ export let Packets: {
         waitTime: number;
         tag: Symbol;
     }) => Function;
-    Packets: ({ config: { tag, waitTime } }?: {
+    Packets: ({ config: { packet: { waitTime }, tag } }?: {
         config: {
             waitTime: number;
             tag: Symbol;

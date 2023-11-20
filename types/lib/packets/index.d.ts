@@ -17,7 +17,7 @@ export function Packet({ waitTime, tag }: {
  * @param {import('./types').tag} params.config.tag
  * @returns {import('./types').Api}
  */
-export function Packets({ config: { tag, waitTime } }?: {
+export function Packets({ config: { packet: { waitTime }, tag } }?: {
     config: {
         waitTime: import('./types').waitTime;
         tag: import('./types').tag;
