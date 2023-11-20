@@ -33,3 +33,28 @@ export type Packet = {
         current: Promise<any>;
     };
 };
+/**
+ * - Packets
+ */
+export type Packets = {
+    /**
+     * - adds new packet
+     */
+    add: Function;
+    /**
+     * - finds packet
+     */
+    find: Function;
+    /**
+     * - inventory length
+     */
+    len: Function;
+    /**
+     * - search for packet in inventory, if not found, create new packet and adds it to inventory
+     */
+    acquire: Function;
+    /**
+     * - remove & destroy packet from inventory
+     */
+    destroy: Function;
+};

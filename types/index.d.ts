@@ -9,34 +9,12 @@ export let Packets: {
     Packet: ({ waitTime, tag }: {
         waitTime: number;
         tag: Symbol;
-    }) => import("./lib/packets/types").Packet;
+    }) => Function;
     Packets: ({ config: { tag, waitTime } }?: {
-        config?: {
-            tag: any;
-            waitTime?: number;
+        config: {
+            waitTime: number;
+            tag: Symbol;
         };
-    }) => {
-        add({ config, header: { method, trace, match } }: {
-            config: any;
-            header?: {
-                method: any;
-                trace: any;
-                match: any;
-            };
-        }): any;
-        find({ idx, tag: curtag }?: {
-            idx: any;
-            tag?: any;
-        }): any;
-        fulfill(packet: any): (payload?: {}) => void;
-        len(): number;
-        acquire({ payload, header, match, config }: {
-            payload: any;
-            header: any;
-            match: any;
-            config: any;
-        }): any;
-        destroy(): void[];
-    };
+    }) => import("./lib/packets/types").Packet;
     merge: (packets: any) => any;
 };
