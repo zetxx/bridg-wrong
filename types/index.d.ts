@@ -15,6 +15,6 @@ export let Packets: {
             waitTime: number;
             tag: Symbol;
         };
-    }) => import("./lib/packets/types").Packet;
+    }) => import("./lib/packets/types").Api;
     merge: (packets: any) => any;
 };

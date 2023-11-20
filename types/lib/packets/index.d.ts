@@ -15,12 +15,12 @@ export function Packet({ waitTime, tag }: {
  * @param {Object} params.config
  * @param {import('./types').waitTime} params.config.waitTime
  * @param {import('./types').tag} params.config.tag
- * @returns {import('./types').Packet}
+ * @returns {import('./types').Api}
  */
 export function Packets({ config: { tag, waitTime } }?: {
     config: {
         waitTime: import('./types').waitTime;
         tag: import('./types').tag;
     };
-}): import('./types').Packet;
+}): import('./types').Api;
 export declare function merge(packets: any): any;

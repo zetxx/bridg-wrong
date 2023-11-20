@@ -58,3 +58,28 @@ export type Packets = {
      */
     destroy: Function;
 };
+/**
+ * - Api
+ */
+export type Api = {
+    /**
+     * - adds new packet
+     */
+    add: Function;
+    /**
+     * - finds packet
+     */
+    find: Function;
+    /**
+     * - inventory length
+     */
+    len: Function;
+    /**
+     * - search for packet in inventory, if not found, create new packet and adds it to inventory
+     */
+    acquire: Function;
+    /**
+     * - remove & destroy packet from inventory
+     */
+    destroy: Function;
+};
