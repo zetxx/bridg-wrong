@@ -23,4 +23,4 @@ export function Packets({ config: { tag, waitTime } }?: {
         tag: import('./types').tag;
     };
 }): import('./types').Api;
-export declare function merge(packets: any): any;
+export declare function merge(packets: import("./types").message[]): import("./types").message;

@@ -16,5 +16,5 @@ export let Packets: {
             tag: Symbol;
         };
     }) => import("./lib/packets/types").Api;
-    merge: (packets: any) => any;
+    merge: (packets: import("./lib/packets/types").message[]) => import("./lib/packets/types").message;
 };

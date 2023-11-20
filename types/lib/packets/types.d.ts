@@ -83,3 +83,19 @@ export type Api = {
      */
     destroy: Function;
 };
+/**
+ * - message
+ */
+export type message = {
+    error: Error;
+    header: header;
+    payload: object;
+};
+/**
+ * - acquire response
+ */
+export type acquireResp = {
+    found: boolean;
+    matched: boolean;
+    packet: Packet;
+};
