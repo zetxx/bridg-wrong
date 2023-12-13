@@ -5,12 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            // node_modules/tap/bin/run.js tests/unit/test.packets.js
             "type": "node",
             "request": "launch",
-            "name": "UT",
-            "program": "${workspaceFolder}/tests/unit.js",
-            "outputCapture": "std",
-            "protocol": "inspector"
+            "name": "test unit",
+            "program": "${workspaceFolder}/tests/unit/",
+            "runtimeArgs": ["--trace-warnings"],
+            "outputCapture": "std"
         }
     ]
 }

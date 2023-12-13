@@ -1,38 +1,71 @@
-## Build
+# Bridg-wrong
+
+Small microservice rpc "as a crossroad" architecture, imagine
+a packet is coming from internal side (over api), and should
+be send to outside world, after that response is received and
+sends back to internal packeter.
+
 [![Build Status](https://travis-ci.com/zetxx/bridg-wrong.svg?branch=master)](https://travis-ci.com/zetxx/bridg-wrong)
 
+## Filesystem structure
 
-## Calls and Overwrites
-- Internal requests
-    - call `apiRequestReceived` when some request is received
-    - will be called: `apiResponseReceived` when someone responded to api request
+- methods(`lib/methods`): holds registered methods
+- packets(`lib/packets`): holds all packet that are send somewhere.
+- wire: this is half of the crossroad
+- router: routes between two wires, this implements 2 wires intersection
 
-### API
-- `meta` can have following props `{method, isNotification, timeout, apiRequestId, resolve, reject, deadIn}`
-    * `method` - used to for tell what method to be executed
-    * `isNotification` - if truty api request will be marked as notification, response will be returned imidietely
-    * `timeout` - after how many ms. request will expire
-    * `apiRequestId` - used for response matching against api request
-    * `resolve` & `reject` - internal usage ony, it resolves api request
-    * `deadIn` - internal usage only, used to trase if message is timeouted, or there is no such `apiRequestId` available for matching
-#### `apiRequestReceived({message, meta})`
-#### `apiResponseReceived({result, error, meta})`
-#### `registerApiMethod({method, fn, meta})`
-example:
-```js
-var service = new Service({name: '...'});
-service.registerExternalMethod({
-    method: 'networkCommand',
-    fn: function(message) {
-        return message;
+### Wire
+
+#### Examle
+
+```javascript
+const Wire = require('=./lib/wire');
+const wire = Wire({
+    // passing log
+    log = (level, msg) => console[level](msg),
+    // config
+    config: {
+        // packets config
+        packet: {
+            // how much time packet to wait before times out
+            waitTime = 1000000
+        } = {},
+        // unique id of the wire
+        id
+    } = {}
+});
+
+wire.methods.add({
+    // register method a for incoming packet
+    // it is called right after packet is received
+    method: 'a',
+    // method that will be executed
+    // when wire.pass({payload: ..., header: {method: 'a.in'}}) is called
+    fn: ({payload, error}) => {
+        // do something useful
+        return ...;
     }
 });
-service.start()
-    .then((e) => service.log('info', {description: 'service ready', args: {fingerprint: service.getFingerprint()}}))
-    .catch((e) => service.log('error', e));
-```
-#### `registerExternalMethod({method, fn, meta})`
 
-### Overwrites
-#### `externalIn({result, error, meta})` - should be called right after external packages went in
-#### `externalOut({result, error, meta})` - should be re-implemented, and called right before external package goes out
+// special method that will be called
+// at the end, when everything else is called/done
+wire.methods.add({
+    // register method a for incoming packet
+    method: '*',
+    // method that will be executed
+    // when wire.pass({payload: ..., header: {method: 'a.in'}}) is called
+    fn: ({payload, error}) => {
+        // do something useful
+        return ...;
+    }
+});
+
+......
+
+// actual method execution
+const someResult = await wire.pass({
+    payload: ...,
+    header: {method: 'a'}
+});
+
+```

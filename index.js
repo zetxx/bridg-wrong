@@ -1,1 +1,5 @@
-module.exports = require('./lib/base');
+module.exports = {
+    Router: require('./lib/router'),
+    Methods: require('./lib/methods'),
+    Packets: require('./lib/packets')
+};
