@@ -12,5 +12,16 @@
 #### Examle
 
 ```javascript
-const Wire = require('=./lib/wire');
+const {Wires, Methods} = require('brid-wrong');
+const wires = Wires({.....});
+const module1 = Methods({wires});
+module1.add({name: 'a.b.c', async(message, {ask, notify}) => {
+    // request, it will return response
+    const result = await ask({method: 'b.a.d', params: {......}});
+    // notification, it will not return any response
+    notify({method: 'b.a', params: {....}});
+    return ;
+}});
+const module2 = Methods({wires});
+module2.ask({method: 'a.b.c', params: {a: 1}});
 ```
