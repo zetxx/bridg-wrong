@@ -3,4 +3,4 @@ export let Methods: ({ wires, list: externalList, config }: {
     wires: any;
     list: any;
     config?: {};
-}) => any;
+}) => import("./lib/methods/types").Api;

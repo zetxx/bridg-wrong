@@ -18,7 +18,7 @@ tap.test('Method', (t) => {
         '1.2.abc4',
         'response function method name'
     );
-    methods;
+    
 
     // t.type(methods, 'object', 'method Is object');
     
