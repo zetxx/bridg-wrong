@@ -1,12 +1,20 @@
+export = Methods;
 /**
- * Init
- * @param {Object} init
- * @param {Object} init.config
- * @param {Symbol} init.config.tag
- * @returns {import('./types').Api}
+ * Methods bootstrap
+ * @property {object} props
+ * @property {import('../wires/types.js').Api} props.wires
+ * @property {Map<string, AddValue>} props.list
+ * @property {any} props.config
+ * @returns {import('./types.js').Api}
  */
-export function Methods({ config: { tag } }: {
-    config: {
-        tag: Symbol;
-    };
-}): import('./types').Api;
+declare function Methods({ wires, list: externalList, config }: {
+    wires: any;
+    list: any;
+    config?: {};
+}): any;
+declare namespace Methods {
+    export { AddValue };
+}
+type AddValue = {
+    fn: import('../types.js').messageFn;
+};

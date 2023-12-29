@@ -1,18 +1,17 @@
-export const unused: {};
-export type add = {
-    method: string[];
-    fn: Function;
+type apiAddParams = {
+    name: string;
+    fn: import('../types.js').messageFn;
 };
-export type find = {
-    method: string[];
+type apiFindReturns = any;
+type apiAdd = (params: apiAddParams) => void;
+type apiRemove = (name: string) => void;
+type apiFind = (name: string) => any;
+type apiSend = (message: import('../types.js').message, ready: import('../types.js').messageFn) => void;
+type apiTest = (name: string) => void;
+type Api = {
+    add: apiAdd;
+    remove: apiRemove;
+    find: apiFind;
+    send: apiSend;
+    test: apiTest;
 };
-export type call = {
-    method: string[];
-    ctx: object;
-};
-export type Api = {
-    add: Function;
-    find: Function;
-    call: Function;
-};
-export type methods = Map<string, Function>;

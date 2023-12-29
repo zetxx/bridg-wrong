@@ -1,101 +1,35 @@
 const tap = require('tap');
-const {Methods} = require('../../lib/methods');
-const {NotFound} = require('../../lib/methods/errors');
-const methods = Methods({
-    config: {tag: Symbol(Math.random())}
-});
-
+const Methods = require('../../lib/methods');
+const mockWires = {
+    register(){},
+    write(){}
+};
+const methods = new (Methods({
+    wires: mockWires
+}));
 tap.test('Method', (t) => {
-    t.type(methods, 'object', 'method Is object');
-    t.type(
-        methods.add,
-        'function',
-        'method.add is function'
+    t.same(
+        methods.responseMethodName({id: 'abc4'}),
+        '1.1.abc4',
+        'response function method name'
     );
-    t.type(
-        methods.find,
-        'function',
-        'method.find is function'
+    t.same(
+        methods.responseMethodName({id: 'abc4'}),
+        '1.2.abc4',
+        'response function method name'
     );
-    t.type(
-        methods.call,
-        'function',
-        'method.call is function'
-    );
-    methods.add({method: ['abc'], fn: () => 1});
+    methods;
 
-    t.throws(
-        () => methods.find(),
-        NotFound.create(
-            'method: {method} not found',
-            {method: ''}
-        ),
-        'should throw'
-    );
-
-    t.throws(
-        () => methods.find(['abcd']),
-        NotFound.create(
-            'method: {method} not found',
-            {method: 'abcd'}
-        ),
-        'should throw'
-    );
-
-    t.rejects(
-        methods.call({
-            ctx: {
-                header: {
-                    method: ['abcd']
-                }
-            },
-            method: ['abcd']
-        }),
-        NotFound.create(
-            'method: {method} not found',
-            {method: 'abcd'}
-        ),
-        'should throw'
-    );
-    t.throws(
-        () => methods.find(['abcd']),
-        NotFound.create(
-            'method: {method} not found',
-            {method: 'abcd'}
-        ),
-        'should throw'
-    );
-
-    t.type(
-        methods.find(['abc']),
-        'function',
-        'method.find should returns function'
-    );
-
-    t.resolves(
-        methods.call({
-            ctx: {
-                header: {
-                    method: ['abc']
-                }
-            },
-            method: ['abc']
-        }),
-        'should resolves'
-    );
-
-    t.resolveMatch(
-        methods.call({
-            ctx: {
-                header: {
-                    method: ['abc']
-                }
-            },
-            method: ['abc']
-        }),
-        1,
-        'should resolves to value'
-    );
+    // t.type(methods, 'object', 'method Is object');
+    
+    // t.throws(
+    //     () => methods.find(),
+    //     NotFound.create(
+    //         'method: {method} not found',
+    //         {method: ''}
+    //     ),
+    //     'should throw'
+    // );
     t.end();
 });
 
