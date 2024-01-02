@@ -18,7 +18,7 @@
       "tap": "^18.6.1"
     },
     "scripts": {
-      "unit-test": "./node_modules/tap/bin/run.js --no-cov ./tests/unit/",
+      "unit-test": "./node_modules/.bin/tap --snapshot-clean-cwd --coverage-report=html ./tests/unit/ ",
       "gdocs": "jsdoc -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
     },
     "homepage": "????",

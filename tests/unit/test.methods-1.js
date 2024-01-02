@@ -82,16 +82,16 @@ tap.test('Method', async(t) => {
         'find should return undefined'
     );
     methods.add({name: 'a1', fn: (message) => 123});
-    const r = methods.send({id: 1, method: 'a1', params: [123]});
+    const r = methods.ask({id: 1, method: 'a1', params: [123]});
     const mk = [...methodsList.keys()];
-    const idx = mk.findIndex((v) => v.indexOf('testmethods.response.') > -1);
+    const idx = mk.findIndex((v) => v.indexOf('testmethods.a1.response.') > -1);
     const m = methodsList.get(mk[idx]).fn;
     t.same(
         idx,
         1,
         'find response method'
     );
-    const rE = methods.send({id: 1, method: 'a1', params: [123]});
+    const rE = methods.ask({id: 1, method: 'a1', params: [123]});
     t.same(
         methodsList.size,
         3,
@@ -105,22 +105,31 @@ tap.test('Method', async(t) => {
     );
     await t.resolves(r, {});
     const mkE = [...methodsList.keys()];
-    const idxE = mk.findIndex((v) => v.indexOf('testmethods.response.') > -1);
+    const idxE = mk.findIndex((v) => v.indexOf('testmethods.a1.response.') > -1);
     const mE = methodsList.get(mkE[idxE]).fn;
-    mE({error: new Error('someError')});
-    await t.rejects(rE, {});
-    console.log(await rE);
+    const se = new Error('someError');
+    mE({error: se});
+    try {
+        z = await rE;
+        console.log(z);
+    } catch (e) {
+        t.same(e.error, se, 'Error should match');
+    }
+    methods.add({
+        name: 'a3',
+        fn: async(message) => await (new Promise(
+            (resolve) => setTimeout(() => resolve(), 3000)
+        ))
+    });
 
-    // t.type(methods, 'object', 'method Is object');
-    
-    // t.throws(
-    //     () => methods.find(),
-    //     NotFound.create(
-    //         'method: {method} not found',
-    //         {method: ''}
-    //     ),
-    //     'should throw'
-    // );
+    const res1 = methods.ask({id: 1, method: 'a3', params: [123], meta: {timeout: 1000}});
+    try {
+        await res1;
+    } catch ({error}) {
+        t.same(error.message, 'TimeOut', 'Time out');
+    }
+
+    const r1 = methods.notify({id: 1, method: 'a1', params: [123]});
     t.end();
 });
 

@@ -1,3 +1,1 @@
-browser: true
 output-dir: "./coverage"
-coverage-report: "html"
