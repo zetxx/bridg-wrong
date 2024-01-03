@@ -1,3 +1,2 @@
-declare class MethodNotFound {
-}
-export { MethodNotFound as NotFound };
+export let TimeOut: Error;
+export let NotFound: Error;

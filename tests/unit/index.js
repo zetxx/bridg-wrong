@@ -1,5 +1,2 @@
-require('./test.methods');
-require('./test.packets');
-require('./wire/test.wire.simple');
-// @TODO wire timeouts
-// require('./router/test.router');
+require('./test.methods-1');
+require('./test.methods-wires');
