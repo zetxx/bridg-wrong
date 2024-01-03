@@ -1,5 +1,5 @@
 {
-    "name": "????",
+    "name": "bridg-wrong",
     "description": "",
     "main": "./index.js",
     "types": "./types/index.d.ts",
@@ -21,10 +21,10 @@
       "unit-test": "./node_modules/.bin/tap --snapshot-clean-cwd --coverage-report=html ./tests/unit/ ",
       "gdocs": "jsdoc -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
     },
-    "homepage": "????",
+    "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
     "repository": {
       "type": "git",
-      "url": "????"
+      "url": "git@github.com:zetxx/bridg-wrong.git"
     }
   }
   
