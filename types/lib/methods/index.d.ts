@@ -12,9 +12,3 @@ declare function Methods({ wires, list: externalList, config }: {
     list: any;
     config?: {};
 }): import('./types.js').Api;
-declare namespace Methods {
-    export { AddValue };
-}
-type AddValue = {
-    fn: import('../types.js').messageFn;
-};
