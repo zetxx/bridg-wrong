@@ -53,7 +53,7 @@ tap.test('Method', async(t) => {
     );
     t.same(
         [...methodsList.values()],
-        [{fn: fn1}],
+        [{fn: fn1, 'options': undefined}],
         'methods, check values, function itself'
     );
     t.same(
