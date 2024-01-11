@@ -19,6 +19,11 @@ const methods2 = new (Methods({
 const methods3 = new (Methods({
     wires,
     list: requests,
+    config: {namespace: 'ethods12', timeout: 5000}
+}));
+const methods4 = new (Methods({
+    wires,
+    list: requests,
     config: {namespace: 'ethods12'}
 }));
 methods2.add({name: 'a.b.fn1', fn: (m) => 123});
@@ -26,6 +31,11 @@ methods2.add({name: 'a.b.fn.ask', fn: async(m, {ask}) => (await ask({method: 'a.
 methods2.add({name: 'a.b.fn.notify', fn: async(m, {notify}) => await notify({method: 'a.b.fn3'})});
 methods3.add({name: 'a.b.fn3', fn: (m) => 123});
 methods3.add({name: 'a.b.fn2.throws', fn: (m) => {throw new Error('abc')}});
+methods4.add({name: 'a.b.fn2.resolve.after.timeout', fn: (m) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {resolve(123);}, 1000);
+    });
+}});
 tap.test('Wires + Methods', async(t) => {
     try {
         await methods1.ask({id: 1, method: 'a1', params: [123]});
@@ -76,6 +86,17 @@ tap.test('Wires + Methods', async(t) => {
             error.message,
             'abc',
             'check throw in method'
+        );
+    }
+    // let it finnish
+    setTimeout(() => {}, 10000);
+    try {
+        r = await methods1.ask({method: 'a.b.fn2.resolve.after.timeout', meta: {timeout: 500}, params: [123]});
+    } catch ({error}) {
+        t.same(
+            error.message,
+            'TimeOut',
+            'resolve after request times out'
         );
     }
     t.end();
