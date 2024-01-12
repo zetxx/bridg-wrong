@@ -32,9 +32,16 @@ methods2.add({name: 'a.b.fn.notify', fn: async(m, {notify}) => await notify({met
 methods3.add({name: 'a.b.fn3', fn: (m) => 123});
 methods3.add({name: 'a.b.fn2.throws', fn: (m) => {throw new Error('abc')}});
 methods4.add({name: 'a.b.fn2.resolve.after.timeout', fn: (m) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {resolve(123);}, 1000);
     });
+}});
+methods4.add({name: 'a.b.fn2.reject.after.timeout', fn: async(m) => {
+    return await (new Promise((reject) => {
+        setTimeout(() => {
+            reject(new Error('123'));
+        }, 2000);
+    }));
 }});
 tap.test('Wires + Methods', async(t) => {
     try {
@@ -97,6 +104,15 @@ tap.test('Wires + Methods', async(t) => {
             error.message,
             'TimeOut',
             'resolve after request times out'
+        );
+    }
+    try {
+        r = await methods1.ask({method: 'a.b.fn2.reject.after.timeout', meta: {timeout: 500}, params: [123]});
+    } catch ({error}) {
+        t.same(
+            error.message,
+            'TimeOut',
+            'rejects after request times out'
         );
     }
     t.end();
