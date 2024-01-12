@@ -4,27 +4,26 @@
     "main": "./index.js",
     "types": "./types/index.d.ts",
     "author": {
-      "email": "zetxx@belogradchik.biz",
-      "name": "Elin Angelov",
-      "url": "https://github.com/zetxx/bridg-wrong"
+        "email": "zetxx@belogradchik.biz",
+        "name": "Elin Angelov",
+        "url": "https://github.com/zetxx/bridg-wrong"
     },
     "dependencies": {
-      "error": "^10.4.0"
+        "error": "^10.4.0"
     },
     "devDependencies": {
-      "jsdoc-tsimport-plugin": "^1.0.5",
-      "typescript": "^5.3.3",
-      "semantic-release": "^22.0.12",
-      "tap": "^18.6.1"
+        "jsdoc-tsimport-plugin": "^1.0.5",
+        "typescript": "^5.3.3",
+        "semantic-release": "^22.0.12",
+        "tap": "^18.6.1"
     },
     "scripts": {
-      "unit-test": "./node_modules/.bin/tap --snapshot-clean-cwd --coverage-report=html ./tests/unit/ ",
-      "gdocs": "jsdoc -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
+        "unit-test": "./node_modules/.bin/tap --snapshot-clean-cwd --coverage-report=html ./tests/unit/ ",
+        "gdocs": "jsdoc -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
     },
     "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
     "repository": {
-      "type": "git",
-      "url": "git@github.com:zetxx/bridg-wrong.git"
+        "type": "git",
+        "url": "git@github.com:zetxx/bridg-wrong.git"
     }
-  }
-  
+}
