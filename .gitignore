@@ -3,3 +3,4 @@ docs/**/*
 out/**/*
 .tap/**/*
 coverage/**/*
+package-lock.json
