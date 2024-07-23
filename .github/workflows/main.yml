@@ -26,6 +26,8 @@ jobs:
           node-version: "lts/*"
       - name: Install dependencies
         run: npm i --package-lock-only && npm clean-install
+      - name: Tests and docs
+        run: npm run unit-test && npm run gdocs
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

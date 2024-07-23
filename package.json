@@ -12,14 +12,15 @@
         "error": "^10.4.0"
     },
     "devDependencies": {
+        "jsdoc": "^4.0.3",
         "jsdoc-tsimport-plugin": "^1.0.5",
-        "typescript": "^5.3.3",
-        "semantic-release": "^22.0.12",
-        "tap": "^18.6.1"
+        "semantic-release": "^24.0.0",
+        "tap": "^18.6.1",
+        "typescript": "^5.3.3"
     },
     "scripts": {
         "unit-test": "./node_modules/.bin/tap --snapshot-clean-cwd --coverage-report=html ./tests/unit/ ",
-        "gdocs": "jsdoc -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
+        "gdocs": "node_modules/jsdoc/jsdoc.js -c jsdoc.json . | npx -p typescript tsc index.js --declaration --allowJs --emitDeclarationOnly --outDir types"
     },
     "homepage": "https://github.com/zetxx/bridg-wrong/blob/master/README.md",
     "repository": {

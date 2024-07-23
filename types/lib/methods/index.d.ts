@@ -11,4 +11,4 @@ declare function Methods({ wires, list: externalList, config }: {
     wires: any;
     list: any;
     config?: {};
-}): import('./types.js').Api;
+}): import("./types.js").Api;
