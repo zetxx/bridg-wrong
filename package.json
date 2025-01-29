@@ -12,6 +12,7 @@
         "error": "^10.4.0"
     },
     "devDependencies": {
+        "@biomejs/biome": "1.9.4",
         "jsdoc": "^4.0.3",
         "jsdoc-tsimport-plugin": "^1.0.5",
         "semantic-release": "^24.0.0",
