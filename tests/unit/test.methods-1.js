@@ -111,7 +111,6 @@ tap.test('Method', async(t) => {
     mE({error: se});
     try {
         z = await rE;
-        console.log(z);
     } catch (e) {
         t.same(e.error, se, 'Error should match');
     }
